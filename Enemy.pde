@@ -8,6 +8,7 @@ void updateEnemies()
   if (enemies.size() == 0)
   {
     gameState = WIN;
+    changeScore(1000);
   } else {
     Iterator<Enemy> enemyIter = enemies.iterator();
     while (enemyIter.hasNext())
@@ -26,12 +27,18 @@ void updateEnemies()
             // head hit, kill snake
             //enemies.remove(this);
             enemyIter.remove();
+            
+            // 100 points per snake head kill
+            changeScore(100);
+            
           } else {
             int newSize = currentEnemy.sizeOfBody - resultOfBulletCollision;
            // println("Splitting snake with body parts: " + newSize + ", " + resultOfBulletCollision);
             enemyIter.remove();
             toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, newSize, -1));
             toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, resultOfBulletCollision, +1));
+            
+            changeScore(10);
             
             //toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, newSize, 1));
             //toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, resultOfBulletCollision, -1));
@@ -86,6 +93,8 @@ class Enemy
   int sizeOfBody = int(random(10, 12));
   int dx = speed/2;
   PVector[] bodyPos;
+  int colour = 200;
+
 
   Enemy(int x, int y)
   {
@@ -114,6 +123,22 @@ class Enemy
       bodyPos[i] = new PVector(x, y);
     }
   }
+  
+  Enemy(int x, int y, int size, int direction, int colour)
+  {
+    this.x = x;
+    this.y = y;
+    this.sizeOfBody = size;
+    this.dx *= direction;
+
+    this.bodyPos = new PVector[sizeOfBody];
+    this.colour = colour;
+
+    for (int i = 0; i<sizeOfBody; i++)
+    {
+      bodyPos[i] = new PVector(x, y);
+    }
+  }
 
   void update()
   {
@@ -129,9 +154,9 @@ class Enemy
     }
 
     float multiplier = 255/sizeOfBody;
-    for (int i = 0; i < sizeOfBody; i++)
+    for (int i = bodyPos.length-1; i > 0; i--)
     {
-      fill((i+1)*multiplier, 150, 200);
+      fill((i+1)*multiplier, colour, colour);
       display(bodyPos[i].x, bodyPos[i].y);
     }
 

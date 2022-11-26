@@ -6,7 +6,6 @@ Bullets bullets = new Bullets();
 class Bullet
 {
   float x, y, speed;
-  int size = 10;
 
   Bullet(float x, float y, float speed)
   {
@@ -29,7 +28,7 @@ class Bullet
   void display()
   {
     fill(#F5FA00);
-    ellipse(x, y, size, size);
+    ellipse(x, y, size/2, size/2);
   }
 }
 

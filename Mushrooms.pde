@@ -18,7 +18,8 @@ class Mushroom
   {
     if (damageState < 3)
     {
-      fill(0, 255, 0);
+      if (Level.getLevel() == 1) fill(0, 255, 0);
+      if (Level.getLevel() == 2) fill(#9D03FF);
       sizeMushy = size/damageState;
       rect(x, y, size, sizeMushy);
     }
@@ -29,6 +30,8 @@ class Mushroom
     if (bullet.x > x && bullet.x < x + size && bullet.y > y && bullet.y < y+sizeMushy)
     {
       damageState++;
+      changeScore(5);
+      //println("Mushroom damaged, at state of " + damageState);
       return true;
       //bullets.removeBullet(bullet);
     }

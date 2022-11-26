@@ -42,6 +42,8 @@ void INGAME()
   bullets.updateBullets();
 
   //if (keyPressed) if (key == ' ' && gameState == INGAME && SetLevel) bullets.addBullet();
+  drawGameUI();
+
 
   if (!SetLevel)
   {
@@ -122,4 +124,18 @@ void drawPixelsBackground()
     stroke(random(255), random(255), random(255));
     point(random(width), random(height));
   }
+}
+
+
+void drawGameUI()
+{
+  // TODO: player lives, score and current level
+  
+  textAlign(LEFT);
+  textSize(20);
+  fill(#FEFF03);
+  text("Score: " + playerScore, playerShip.x+20, playerShip.y+size/2);
+  
+  
+  
 }
