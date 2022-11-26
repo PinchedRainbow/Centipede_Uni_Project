@@ -56,7 +56,6 @@ void keyPressed()
   if (keyCode == LEFT && playerShip.getX() > 0 + playerShip.size/2) playerShip.setX(playerShip.x-=playerShip.speed);
   if (keyCode == RIGHT && playerShip.x < width - playerShip.size/2) playerShip.setX(playerShip.x+=playerShip.speed);
   
-  
   //if (key == CODED)
   //{
   //  if (keyCode == LEFT && !playerShip.useMouseToMove && gameState == INGAME)

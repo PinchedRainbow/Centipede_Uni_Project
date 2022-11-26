@@ -39,9 +39,7 @@ class Mushroom
 
 void generateMushrooms()
 {
-  // replace with levelling system later on
-  int Level = 1;
-  int numMushrooms = (Level*100);
+  int numMushrooms = (Level.getLevel()*100);
 
   for (int i = 0; i < numMushrooms; i++)
   {
@@ -54,4 +52,9 @@ void generateMushrooms()
 
     mushrooms.add(new Mushroom(x*multWidth, y*multHeight));
   }
+}
+
+void clearMushrooms()
+{
+  mushrooms.clear();
 }

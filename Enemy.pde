@@ -5,60 +5,94 @@ ArrayList<Enemy> toAddEnemies = new ArrayList<>();
 
 void updateEnemies()
 {
-  Iterator<Enemy> enemyIter = enemies.iterator();
-  while (enemyIter.hasNext())
-  {
-    Enemy currentEnemy = enemyIter.next();
-    currentEnemy.update();
-    
-    int resultOfBulletCollision = currentEnemy.collisionWithBullet();
-    if (resultOfBulletCollision != -1)
-    {
-      if (resultOfBulletCollision == 0)
-      {
-        // head hit, kill snake
-        //enemies.remove(this);
-        enemyIter.remove();
-      } else {
-        println("Bullet collided with centipede at index " + resultOfBulletCollision);
-        int newSize = currentEnemy.sizeOfBody - resultOfBulletCollision;
-        enemyIter.remove();
-        toAddEnemies.add(new Enemy(currentEnemy.x+(size*resultOfBulletCollision), currentEnemy.y, newSize, 1));
-        toAddEnemies.add(new Enemy(currentEnemy.x-(size*resultOfBulletCollision), currentEnemy.y, resultOfBulletCollision, -1));
-      }
-    }
-  }
-  
-  enemies.addAll(toAddEnemies);
-  toAddEnemies.clear();
-  
   if (enemies.size() == 0)
   {
-    gameState = MENU;
+    gameState = WIN;
+  } else {
+    Iterator<Enemy> enemyIter = enemies.iterator();
+    while (enemyIter.hasNext())
+    {
+      Enemy currentEnemy = enemyIter.next();
+      currentEnemy.update();
+      if (currentEnemy.sizeOfBody == 1)
+      {
+        enemyIter.remove();
+      } else {
+        int resultOfBulletCollision = currentEnemy.collisionWithBullet();
+        if (resultOfBulletCollision != -1)
+        {
+          if (resultOfBulletCollision == 0)
+          {
+            // head hit, kill snake
+            //enemies.remove(this);
+            enemyIter.remove();
+          } else {
+            int newSize = currentEnemy.sizeOfBody - resultOfBulletCollision;
+           // println("Splitting snake with body parts: " + newSize + ", " + resultOfBulletCollision);
+            enemyIter.remove();
+            toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, newSize, -1));
+            toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, resultOfBulletCollision, +1));
+            
+            //toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, newSize, 1));
+            //toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, resultOfBulletCollision, -1));
+          }
+        }
+      }
+    }
+
+    enemies.addAll(toAddEnemies);
+    toAddEnemies.clear();
   }
-  
-  
 }
 
 void resetEnemies()
 {
-  for (Enemy enemy: enemies)
+  for (Enemy enemy : enemies)
   {
     enemy.y=0;
   }
 }
+
+
+void generateEnemies()
+{
+  enemies.clear();
+  for (int i = 0; i < Level.getLevel(); i++)
+  {
+    int direction;
+    if (i%2==0) direction = 1;
+    else direction = -1;
+    enemies.add(new Enemy(returningX(), 0, int(random(10, 12)), direction));
+  }
+}
+
+
+int returningX()
+{
+  int number;
+  while (true)
+  {
+    number = int(random(width));
+    if (number%size==0) break;
+  }
+
+  return number;
+}
+
 
 class Enemy
 {
   int x, y;
   int sizeOfBody = int(random(10, 12));
   int dx = speed/2;
-  PVector[] bodyPos = new PVector[sizeOfBody];
+  PVector[] bodyPos;
 
   Enemy(int x, int y)
   {
     this.x = x;
     this.y = y;
+
+    this.bodyPos = new PVector[sizeOfBody];
 
     for (int i = 0; i<sizeOfBody; i++)
     {
@@ -72,6 +106,8 @@ class Enemy
     this.y = y;
     this.sizeOfBody = size;
     this.dx *= direction;
+
+    this.bodyPos = new PVector[sizeOfBody];
 
     for (int i = 0; i<sizeOfBody; i++)
     {
@@ -104,8 +140,6 @@ class Enemy
       y+=size;
     }
     if (y >= height) gameState = GAMEOVER;
-
-    
   }
 
   void display()

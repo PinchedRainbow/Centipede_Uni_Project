@@ -4,6 +4,7 @@ int INGAME = 1;
 int GAMEOVER = 2;
 int PAUSE = 3;
 int SETTINGS = 4;
+int WIN = 5;
 boolean SetLevel = false;
 
 void MENU()
@@ -17,10 +18,16 @@ void MENU()
 
   if (key == 'a' || key == 'A')
   {
+    SetLevel = false;
+    resetEnemies();
+    generateEnemies();
     playerShip = new Player(width/2, height-20, speed, true, size);
     gameState = INGAME;
   } else if (key == 'b' || key == 'B')
   {
+    SetLevel = false;
+    resetEnemies();
+    generateEnemies();
     playerShip = new Player(width/2, height-20, speed, false, size);
     gameState = INGAME;
   }
@@ -33,19 +40,22 @@ void INGAME()
   drawPixelsBackground();
   playerShip.update();
   bullets.updateBullets();
-  updateEnemies();
+
+  //if (keyPressed) if (key == ' ' && gameState == INGAME && SetLevel) bullets.addBullet();
 
   if (!SetLevel)
   {
+    clearMushrooms();
     generateMushrooms();
     SetLevel = true;
-  }
-  else{
+  } else {
     for (Mushroom mushie : mushrooms)
     {
       mushie.display();
     }
   }
+
+  updateEnemies();
 }
 
 void GAMEOVER()
@@ -56,14 +66,33 @@ void GAMEOVER()
   text("GAME OVER! YOU LOSE", width/2, height/2);
   textSize(20);
   text("Press M to go back to main menu", width/2, height/2+50);
-  
+
   if (key == 'm' || key == 'M')
   {
     SetLevel = false;
-    resetEnemies();
+    bullets.clearBullets();
+    generateEnemies();
     gameState = MENU;
   }
-  
+}
+
+void WIN()
+{
+  background(#111822);
+  textAlign(CENTER);
+  textSize(30);
+  text("CONGRATULATIONS!!!", width/2, height/2);
+  text("Press W to go to the next level!", width/2, height/2+40);
+
+  if (key == 'w' || key == 'W')
+  {
+    SetLevel = false;
+    gameState = MENU;
+    bullets.clearBullets();
+    Level.setLevel(Level.getLevel() + 1);
+    generateEnemies();
+    println("On Level " + Level.getLevel());
+  }
 }
 
 void PAUSE()
@@ -78,6 +107,12 @@ void mousePressed()
 {
   if (gameState == INGAME) bullets.addBullet();
 }
+
+void keyReleased()
+{
+  if (key == ' ') if (gameState == INGAME) bullets.addBullet();
+}
+
 
 void drawPixelsBackground()
 {

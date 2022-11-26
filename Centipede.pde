@@ -7,8 +7,8 @@ void setup()
   size(800, 800);
   gameState = MENU;
   createHighScoreFile();
-  
-  enemies.add(e1);
+  Level.setLevel(1);
+  //generateEnemies();
 }
 
 
@@ -20,6 +20,7 @@ void draw()
   if (gameState == GAMEOVER) GAMEOVER();
   if (gameState == PAUSE) PAUSE();
   if (gameState == SETTINGS) SETTINGS();
+  if (gameState == WIN) WIN();
 }
 
 
