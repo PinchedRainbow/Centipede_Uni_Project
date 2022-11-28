@@ -48,6 +48,13 @@ class Bullets
 
   void updateBullets()
   {
+
+    if (bulletToRemove!=null)
+    {
+      bulletsList.remove(bulletToRemove);
+      bulletToRemove = null;
+    }
+
     try {
       Iterator<Bullet> bullet = bulletsList.iterator();
       while (bullet.hasNext())

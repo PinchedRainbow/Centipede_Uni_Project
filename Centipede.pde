@@ -9,6 +9,7 @@ void setup()
   gameState = MENU;
   createHighScoreFile();
   Level.setLevel(1);
+  Lives.setLives(3);
   //generateEnemies();
 }
 
