@@ -1,6 +1,8 @@
 int speed = 10;
 int size = 20;
 int playerScore = 0;
+int COOLDOWN = 200;
+long lastShot = System.currentTimeMillis();
 
 
 void setup()

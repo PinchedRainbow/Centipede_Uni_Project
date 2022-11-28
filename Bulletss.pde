@@ -38,7 +38,11 @@ class Bullets
 
   void addBullet()
   {
-    bulletsList.add(new Bullet(playerShip.getCoordinates().x, playerShip.getCoordinates().y, speed));
+    if (System.currentTimeMillis() - lastShot > COOLDOWN)
+    {
+      lastShot = System.currentTimeMillis();
+      bulletsList.add(new Bullet(playerShip.getCoordinates().x, playerShip.getCoordinates().y, speed));
+    }
   }
 
   void clearBullets()
