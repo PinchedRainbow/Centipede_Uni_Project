@@ -10,7 +10,6 @@ void updateEnemies()
   if (enemies.size() == 0)
   {
     gameState = WIN;
-    changeScore(1000);
   } else {
     Iterator<Enemy> enemyIter = enemies.iterator();
     while (enemyIter.hasNext())
@@ -71,7 +70,7 @@ void generateEnemies()
     int direction;
     if (i%2==0) direction = 1;
     else direction = -1;
-    enemies.add(new Enemy(returningX(), 0, int(random(10, 12)), direction));
+    enemies.add(new Enemy(returningX(), -size*2, int(random(10, 12)), direction));
   }
 }
 

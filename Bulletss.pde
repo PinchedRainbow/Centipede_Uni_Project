@@ -29,6 +29,7 @@ class Bullet
   {
     fill(#F5FA00);
     ellipse(x, y, size/2, size/2);
+    // rect(x, y, size/5, size);
   }
 }
 

@@ -30,20 +30,28 @@ void draw()
 
 void createHighScoreFile()
 {
-  File f = new File("highscores.txt");
-  if (!f.exists())
-  {
-    // creates highscore file
-    PrintWriter file = createWriter("highscores.txt");
-    file.println("--- HighScores in Centipede ----");
-    file.flush();
-    file.close();
-    println("Created highscore file!!!");
+  try {
+
+    File f = new File("highscores.txt");
+    if (f.createNewFile())
+    {
+      // creates highscore file
+      PrintWriter file = createWriter("highscores.txt");
+      file.println("--- HighScores in Centipede ----");
+      file.flush();
+      file.close();
+      println("Created highscore file!!!");
+    } else {
+      println("Found existing highscore file");
+    }
   }
-  else{ println("Found existing highscore file");}
+  catch(IOException e)
+  {
+    println("I have no idea but uhh yea here u go " + e);
+  }
 }
 
-// Could do 2 seperate methods for incresae and decrease but prefer to just use one method and use parameter with minus scoring nstead 
+// Could do 2 seperate methods for incresae and decrease but prefer to just use one method and use parameter with minus scoring nstead
 void changeScore(int score)
 {
   playerScore+=score;

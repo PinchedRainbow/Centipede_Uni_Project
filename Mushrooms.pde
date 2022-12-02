@@ -34,7 +34,7 @@ class Mushroom
     if (bullet.x > x && bullet.x < x + size && bullet.y > y && bullet.y < y + size)
     {
       damageState++;
-      changeScore(5);
+      changeScore(4);
       //println("Mushroom damaged, at state of " + damageState);
       return true;
       //bullets.removeBullet(bullet);

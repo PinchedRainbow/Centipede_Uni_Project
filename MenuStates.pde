@@ -117,6 +117,7 @@ void WIN()
     bullets.clearBullets();
     Level.setLevel(Level.getLevel() + 1);
     generateEnemies();
+    //changeScore(1000);
     println("On Level " + Level.getLevel());
   }
 }
