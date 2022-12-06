@@ -1,3 +1,5 @@
+SoundFile levelUp;
+
 static class Level
 {
   static int currentLevel;

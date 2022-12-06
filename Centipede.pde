@@ -1,37 +1,65 @@
+import processing.sound.*;
+import java.util.Scanner;
+
 int speed = 10;
 int size = 20;
 int playerScore = 0;
-int COOLDOWN = 300;
+int COOLDOWN = 400;
 long lastShot = System.currentTimeMillis();
+PImage[] centiBodies = new PImage[8];
+PImage[] centiHeads = new PImage[8];
 
+String playerName = "";
 
 void setup()
 {
   size(800, 800);
-  gameState = MENU;
+  surface.setTitle("Centipede - Faheem Saleem");
+  gameState = SPLASH;
   createHighScoreFile();
   Level.setLevel(1);
   Lives.setLives(3);
   //generateEnemies();
+  loadAssets();
+}
+
+void loadAssets()
+{
+  shootSFX = new SoundFile(this, "sounds/shoot.mp3");
+  splitSound = new SoundFile(this, "sounds/explode.mp3");
+  hit = new SoundFile(this, "sounds/hit.mp3");
+  levelUp = new SoundFile(this, "sounds/levelUp.mp3");
+  splashSound = new SoundFile(this, "sounds/countDown.mp3");
+  
+  for (int i = 0; i < centiBodies.length; i++)
+  {
+    centiBodies[i] = loadImage("images/body" + (i+1) + ".png");
+    centiHeads[i] = loadImage("images/head" + (i+1) + ".png");
+    
+    centiBodies[i].resize(size, size);
+    centiHeads[i].resize(size, size);
+  }
 }
 
 
 void draw()
 {
   background(0);
+  if (gameState == SPLASH) SPLASH();
+  if (gameState == ENTERNAME) ENTERNAME();
   if (gameState == MENU) MENU();
   if (gameState == INGAME) INGAME();
   if (gameState == GAMEOVER) GAMEOVER();
   if (gameState == PAUSE) PAUSE();
   if (gameState == SETTINGS) SETTINGS();
   if (gameState == WIN) WIN();
+  if (gameState == HOWTOPLAY) HOWTOPLAY();
 }
 
 
 void createHighScoreFile()
 {
   try {
-
     File f = new File("highscores.txt");
     if (f.createNewFile())
     {
@@ -56,3 +84,5 @@ void changeScore(int score)
 {
   playerScore+=score;
 }
+
+void setScore(int newScore) { playerScore = newScore; }

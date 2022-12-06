@@ -7,6 +7,7 @@ class Player
   private int y;
   private boolean useMouseToMove;
   float size;
+  PImage img;
   
   Player(int x, int y, int speed, boolean useMouse, float size)
   {
@@ -15,6 +16,19 @@ class Player
     this.speed = speed;
     this.useMouseToMove = useMouse;
     this.size = size;
+    
+    int d = int(random(1,100));
+    if (d <= 50)
+    {
+      img = loadImage("images/player.png");
+    }
+    else
+    {
+      img = loadImage("images/player2.png");
+    }
+    
+    img.resize(int(size), 0);
+    
   }
   
   PVector getCoordinates()
@@ -37,7 +51,9 @@ class Player
   {
     stroke(0);
     fill(255);
-    ellipse(x,y, size, size);
+    //ellipse(x,y, size, size);
+    imageMode(CENTER);
+    image(img, x,y);
   }
   
   void move()

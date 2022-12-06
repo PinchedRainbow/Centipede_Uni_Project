@@ -2,6 +2,7 @@ import java.util.Iterator;
 
 //ArrayList<Bullet> bulletsList = new ArrayList<>();
 Bullets bullets = new Bullets();
+SoundFile shootSFX;
 
 class Bullet
 {
@@ -36,13 +37,15 @@ class Bullet
 class Bullets
 {
   ArrayList<Bullet> bulletsList = new ArrayList<>();
+  
 
   void addBullet()
   {
     if (System.currentTimeMillis() - lastShot > COOLDOWN)
     {
       lastShot = System.currentTimeMillis();
-      bulletsList.add(new Bullet(playerShip.getCoordinates().x, playerShip.getCoordinates().y, speed));
+      bulletsList.add(new Bullet(playerShip.getCoordinates().x, playerShip.getCoordinates().y, speed*2));
+      shootSFX.play();
     }
   }
 
@@ -67,7 +70,7 @@ class Bullets
         Bullet currentBullet = bullet.next();
         currentBullet.update();
         if (currentBullet.y < -size) bullet.remove();
-        for (Mushroom mushy : mushrooms)
+        for (Mushroom mushy : mushList.mushrooms)
         {
           if (mushy.checkForDamage(currentBullet)) bullet.remove();
         }
