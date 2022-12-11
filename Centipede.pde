@@ -8,8 +8,10 @@ int COOLDOWN = 400;
 long lastShot = System.currentTimeMillis();
 PImage[] centiBodies = new PImage[8];
 PImage[] centiHeads = new PImage[8];
+PImage city;
 
 String playerName = "";
+gameStates currentState;;
 
 void setup()
 {
@@ -19,8 +21,8 @@ void setup()
   createHighScoreFile();
   Level.setLevel(1);
   Lives.setLives(3);
-  //generateEnemies();
   loadAssets();
+  currentState = gameStates.SPLASH;
 }
 
 void loadAssets()
@@ -39,6 +41,8 @@ void loadAssets()
     centiBodies[i].resize(size, size);
     centiHeads[i].resize(size, size);
   }
+  
+  city = loadImage("images/city.png");
 }
 
 

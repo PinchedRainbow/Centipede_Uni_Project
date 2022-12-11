@@ -18,47 +18,50 @@ void updateEnemies()
     {
       Centipede currentEnemy = enemyIter.next();
       currentEnemy.update();
-      if (currentEnemy.sizeOfBody == 1)
+
+      int resultOfBulletCollision = currentEnemy.collisionWithBullet();
+      if (resultOfBulletCollision != -1) // bullet hit snake
       {
-        enemyIter.remove();
-      } else {
-        int resultOfBulletCollision = currentEnemy.collisionWithBullet();
-        if (resultOfBulletCollision != -1) // bullet hit snake
+        // getting the x and y values of the snake body hit
+        int bodyX = int(currentEnemy.bodyPos[resultOfBulletCollision].x);
+        int bodyY = int(currentEnemy.bodyPos[resultOfBulletCollision].y);
+
+        if (resultOfBulletCollision == 0) // head hit, kill off whole snake
         {
-          // getting the x and y values of the snake body hit
-          int bodyX = int(currentEnemy.bodyPos[resultOfBulletCollision].x);
-          int bodyY = int(currentEnemy.bodyPos[resultOfBulletCollision].y);
+          //enemies.remove(this);
+          enemyIter.remove();
 
-          splitSound.play();
+          // 100 points per snake head kill
+          changeScore(100);
 
-          if (resultOfBulletCollision == 0) // head hit, kill off whole snake
-          {
-            //enemies.remove(this);
-            enemyIter.remove();
+          mushList.spawnMushroom(bodyX, bodyY);
+        } else {
+          int newSize = currentEnemy.sizeOfBody - resultOfBulletCollision;
+          // println("Splitting snake with body parts: " + newSize + ", " + resultOfBulletCollision);
 
-            // 100 points per snake head kill
-            changeScore(100);
+          mushList.spawnMushroom(bodyX, bodyY);
 
-            mushList.spawnMushroom(bodyX, bodyY);
-          } else {
-            int newSize = currentEnemy.sizeOfBody - resultOfBulletCollision;
-            // println("Splitting snake with body parts: " + newSize + ", " + resultOfBulletCollision);
+          enemyIter.remove();
+          toAddEnemies.add(new Centipede(bodyX, bodyY, newSize, -1));
+          toAddEnemies.add(new Centipede(bodyX, bodyY, resultOfBulletCollision, +1));
 
-            mushList.spawnMushroom(bodyX, bodyY);
+          changeScore(10);
 
-            enemyIter.remove();
-            toAddEnemies.add(new Centipede(bodyX, bodyY, newSize, 1));
-            toAddEnemies.add(new Centipede(bodyX, bodyY, resultOfBulletCollision, -1));
+          
 
-            changeScore(10);
-
-
-
-            //toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, newSize, 1));
-            //toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, resultOfBulletCollision, -1));
-          }
+          //toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, newSize, 1));
+          //toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, resultOfBulletCollision, -1));
         }
+        
+        splitSound.play();
       }
+
+      //if (currentEnemy.sizeOfBody == 1)
+      //{
+      //  enemyIter.remove();
+      //} else {
+
+      //}
     }
 
     enemies.addAll(toAddEnemies);
@@ -198,7 +201,7 @@ class Centipede extends BaseEnemy
       }
       bodyPos[0] = new PVector(x, y);
       jhead+=jx;
-      
+
       if (jhead > centiHeads.length -2 || jhead <= 0) jx *= -1;
     }
 
@@ -287,7 +290,7 @@ class Centipede extends BaseEnemy
           return i;
         }
       }
-    } 
+    }
     return -1;
   }
 

@@ -11,6 +11,21 @@ int ENTERNAME = 8;
 boolean SetLevel = false;
 boolean paused = false;
 
+enum gameStates
+{
+  MENU,
+    INGAME,
+    GAMEOVER,
+    PAUSE,
+    SETTINGS,
+    WIN,
+    SPLASH,
+    HOWTOPLAY,
+    ENTERNAME
+}
+
+
+
 float alpha = 0;
 float alpha2 = 0;
 float alpha3 = 0;
@@ -130,6 +145,12 @@ void SPLASH()
   }
 }
 
+void drawCity()
+{
+  image(city, 0, height-150);
+}
+
+
 void MENU()
 {
   background(#111822);
@@ -172,6 +193,7 @@ void MENU()
       StartGame(false);
     } else if (mouseX > width/2-buttonWidth/2 && mouseX < width/2 + buttonWidth/2 && mouseY > height-100 && mouseY < (height-100) + buttonHeight) gameState = HOWTOPLAY;
   }
+
 }
 
 void StartGame(boolean useMouse)
@@ -264,6 +286,7 @@ void WIN()
   int nextLevel = Level.getLevel()+1;
   text("Press W to go to level " + nextLevel, width/2, height/2+40);
 
+  drawCity();
 
   if (keyPressed) {
     if (key == 'w' || key == 'W')
@@ -307,7 +330,7 @@ void keyReleased()
   if (key == 'p' || key == 'P') paused = !paused;
   if (gameState == ENTERNAME)
   {
-    if (key == ENTER)
+    if (key == ENTER && playerName != "")
     {
       gameState = MENU;
     }
@@ -354,6 +377,7 @@ void drawGameUI()
   textSize(20);
   text("Level " + Level.getLevel(), width-5, 60);
 
+  drawCity();
 
   for (int i = 0; i < Lives.getLives(); i++)
   {
