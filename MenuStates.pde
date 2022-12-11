@@ -1,4 +1,4 @@
-int gameState;
+//int gameState;
 int MENU = 0;
 int INGAME = 1;
 int GAMEOVER = 2;
@@ -10,21 +10,6 @@ int HOWTOPLAY = 7;
 int ENTERNAME = 8;
 boolean SetLevel = false;
 boolean paused = false;
-
-enum gameStates
-{
-  MENU,
-    INGAME,
-    GAMEOVER,
-    PAUSE,
-    SETTINGS,
-    WIN,
-    SPLASH,
-    HOWTOPLAY,
-    ENTERNAME
-}
-
-
 
 float alpha = 0;
 float alpha2 = 0;
@@ -83,7 +68,7 @@ void HOWTOPLAY()
 
   if (mousePressed)
   {
-    if (mouseX > 100 && mouseX < 100 + buttonWidth && mouseY > height-100 && mouseY < (height-100) + buttonHeight) gameState = MENU;
+    if (mouseX > 100 && mouseX < 100 + buttonWidth && mouseY > height-100 && mouseY < (height-100) + buttonHeight) currentState = gameStates.MENU;
   }
 }
 
@@ -138,7 +123,7 @@ void SPLASH()
           alpha4+=2;
         } else if (alpha4 > 255)
         {
-          gameState = ENTERNAME;
+          currentState = gameStates.ENTERNAME;
         }
       }
     }
@@ -191,7 +176,7 @@ void MENU()
     } else if (mouseX > (width/4)*2 && mouseX < (width/4)*2 + buttonWidth && mouseY > height/3 && mouseY < height/3 + buttonHeight)
     {
       StartGame(false);
-    } else if (mouseX > width/2-buttonWidth/2 && mouseX < width/2 + buttonWidth/2 && mouseY > height-100 && mouseY < (height-100) + buttonHeight) gameState = HOWTOPLAY;
+    } else if (mouseX > width/2-buttonWidth/2 && mouseX < width/2 + buttonWidth/2 && mouseY > height-100 && mouseY < (height-100) + buttonHeight) currentState = gameStates.HOWTOPLAY;
   }
 
 }
@@ -202,7 +187,7 @@ void StartGame(boolean useMouse)
   resetEnemies();
   generateEnemies();
   playerShip = new Player(width/2, height-20, speed, useMouse, size);
-  gameState = INGAME;
+  currentState = gameStates.INGAME;
 }
 
 
@@ -262,7 +247,7 @@ void GAMEOVER()
       SetLevel = false;
       bullets.clearBullets();
       generateEnemies();
-      gameState = MENU;
+      currentState = gameStates.MENU;
       Lives.setLives(3);
       Level.setLevel(1);
       setScore(0);
@@ -296,7 +281,7 @@ void WIN()
       Level.setLevel(Level.getLevel() + 1);
       resetEnemies();
       generateEnemies();
-      gameState = INGAME;
+      currentState = gameStates.INGAME;
       //changeScore(1000);
     }
   }
@@ -321,18 +306,18 @@ void SETTINGS()
 
 void mousePressed()
 {
-  if (gameState == INGAME) bullets.addBullet();
+  if (currentState == gameStates.INGAME) bullets.addBullet();
 }
 
 void keyReleased()
 {
-  if (key == ' ') if (gameState == INGAME && !paused) bullets.addBullet();
+  if (key == ' ') if (currentState == gameStates.INGAME && !paused) bullets.addBullet();
   if (key == 'p' || key == 'P') paused = !paused;
-  if (gameState == ENTERNAME)
+  if (currentState == gameStates.ENTERNAME)
   {
     if (key == ENTER && playerName != "")
     {
-      gameState = MENU;
+      currentState = gameStates.MENU;
     }
     if (key == BACKSPACE)
     {

@@ -1,6 +1,21 @@
 import processing.sound.*;
 import java.util.Scanner;
 
+enum gameStates
+{
+  MENU,
+    INGAME,
+    GAMEOVER,
+    PAUSE,
+    SETTINGS,
+    WIN,
+    SPLASH,
+    HOWTOPLAY,
+    ENTERNAME
+}
+
+gameStates currentState;
+
 int speed = 10;
 int size = 20;
 int playerScore = 0;
@@ -11,13 +26,13 @@ PImage[] centiHeads = new PImage[8];
 PImage city;
 
 String playerName = "";
-gameStates currentState;;
+
 
 void setup()
 {
   size(800, 800);
   surface.setTitle("Centipede - Faheem Saleem");
-  gameState = SPLASH;
+  //gameState = SPLASH;
   createHighScoreFile();
   Level.setLevel(1);
   Lives.setLives(3);
@@ -49,15 +64,28 @@ void loadAssets()
 void draw()
 {
   background(0);
-  if (gameState == SPLASH) SPLASH();
-  if (gameState == ENTERNAME) ENTERNAME();
-  if (gameState == MENU) MENU();
-  if (gameState == INGAME) INGAME();
-  if (gameState == GAMEOVER) GAMEOVER();
-  if (gameState == PAUSE) PAUSE();
-  if (gameState == SETTINGS) SETTINGS();
-  if (gameState == WIN) WIN();
-  if (gameState == HOWTOPLAY) HOWTOPLAY();
+  
+  switch(currentState)
+  {
+    case SPLASH: SPLASH(); break;
+    case ENTERNAME: ENTERNAME(); break;
+    case MENU: MENU(); break;
+    case INGAME: INGAME(); break;
+    case GAMEOVER: GAMEOVER(); break;
+    case SETTINGS: SETTINGS(); break;
+    case WIN: WIN(); break;
+    case HOWTOPLAY: HOWTOPLAY(); break;
+  }
+  
+  //if (gameState == SPLASH) SPLASH();
+  //if (gameState == ENTERNAME) ENTERNAME();
+  //if (gameState == MENU) MENU();
+  //if (gameState == INGAME) INGAME();
+  //if (gameState == GAMEOVER) GAMEOVER();
+  //if (gameState == PAUSE) PAUSE();
+  //if (gameState == SETTINGS) SETTINGS();
+  //if (gameState == WIN) WIN();
+  //if (gameState == HOWTOPLAY) HOWTOPLAY();
 }
 
 

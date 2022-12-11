@@ -10,7 +10,7 @@ void updateEnemies()
 {
   if (enemies.size() == 0)
   {
-    gameState = WIN;
+    currentState = gameStates.WIN;
     levelUp.play();
   } else {
     Iterator<Centipede> enemyIter = enemies.iterator();
@@ -247,8 +247,8 @@ class Centipede extends BaseEnemy
     if (y > height)
     {
       Lives.setLives(Lives.getLives()-1);
-      if (Lives.getLives() <= 0) gameState = GAMEOVER;
-      else gameState = MENU;
+      if (Lives.getLives() <= 0) currentState = gameStates.GAMEOVER;
+      else currentState = gameStates.MENU;
     }
   }
 
