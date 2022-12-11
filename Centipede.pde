@@ -71,6 +71,7 @@ void draw()
     case ENTERNAME: ENTERNAME(); break;
     case MENU: MENU(); break;
     case INGAME: INGAME(); break;
+    case PAUSE: PAUSE(); break;
     case GAMEOVER: GAMEOVER(); break;
     case SETTINGS: SETTINGS(); break;
     case WIN: WIN(); break;
