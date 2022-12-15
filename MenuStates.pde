@@ -21,6 +21,7 @@ int buttonHeight = 80;
 int buttonRadius = 30;
 
 SoundFile splashSound;
+SoundFile gameOver;
 boolean played = false;
 
 
@@ -178,7 +179,6 @@ void MENU()
       StartGame(false);
     } else if (mouseX > width/2-buttonWidth/2 && mouseX < width/2 + buttonWidth/2 && mouseY > height-100 && mouseY < (height-100) + buttonHeight) currentState = gameStates.HOWTOPLAY;
   }
-
 }
 
 void StartGame(boolean useMouse)
@@ -244,10 +244,11 @@ void GAMEOVER()
   if (keyPressed) {
     if (key == 'm' || key == 'M')
     {
+      saveHighscore(playerName, playerScore, Level.getLevel());
       SetLevel = false;
       bullets.clearBullets();
       generateEnemies();
-      currentState = gameStates.MENU;
+      currentState = gameStates.ENTERNAME;
       Lives.setLives(3);
       Level.setLevel(1);
       setScore(0);
@@ -304,6 +305,10 @@ void SETTINGS()
 {
 }
 
+void HIGHSCORES()
+{
+}
+
 void mousePressed()
 {
   if (currentState == gameStates.INGAME) bullets.addBullet();
@@ -313,6 +318,8 @@ void keyReleased()
 {
   if (key == ' ') if (currentState == gameStates.INGAME && !paused) bullets.addBullet();
   if (key == 'p' || key == 'P') paused = !paused;
+
+
   if (currentState == gameStates.ENTERNAME)
   {
     if (key == ENTER && playerName != "")
@@ -322,14 +329,19 @@ void keyReleased()
     if (key == BACKSPACE)
     {
       playerName = removeLastChar(playerName);
-    } else if (key != CODED) playerName+=key;
+      keySFX.play();
+    } else if (key != CODED && key != ENTER && playerName.length() < 20) {
+      playerName+=key;
+      keySFX.play();
+    }
   }
 }
 
 private String removeLastChar(String s)
 {
   //returns the string after removing the last character
-  return s.substring(0, s.length() - 1);
+  if (s.length() >= 1) return s.substring(0, s.length() - 1);
+  else return "";
 }
 
 void drawPixelsBackground()
@@ -362,7 +374,7 @@ void drawGameUI()
   textSize(20);
   text("Level " + Level.getLevel(), width-5, 60);
 
-  drawCity();
+ // drawCity();
 
   for (int i = 0; i < Lives.getLives(); i++)
   {

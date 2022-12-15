@@ -244,8 +244,9 @@ class Centipede extends BaseEnemy
       dx*=-1;
       y+=size;
     }
-    if (y > height)
+    if (y >= height)
     {
+      gameOver.play();
       Lives.setLives(Lives.getLives()-1);
       if (Lives.getLives() <= 0) currentState = gameStates.GAMEOVER;
       else currentState = gameStates.MENU;
