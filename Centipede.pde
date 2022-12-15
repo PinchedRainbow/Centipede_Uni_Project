@@ -169,7 +169,7 @@ void setScore(int newScore) {
 void saveHighscore(String name, int score, int level)
 {
   highscoreTable.addRow();
-  println(highscoreTable.getRowCount() + " total rows in table");
+  //println(highscoreTable.getRowCount() + " total rows in table");
   highscoreTable.setString(highscoreTable.getRowCount() - 1, "Name", name);
   highscoreTable.setInt(highscoreTable.getRowCount()-1, "Score", score);
   highscoreTable.setInt(highscoreTable.getRowCount()-1, "Level", level);

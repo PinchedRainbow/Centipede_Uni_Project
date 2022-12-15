@@ -187,6 +187,7 @@ void StartGame(boolean useMouse)
   resetEnemies();
   generateEnemies();
   playerShip = new Player(width/2, height-20, speed, useMouse, size);
+  //playerShip = new Player(width/2, height/2, speed, useMouse, size);
   currentState = gameStates.INGAME;
 }
 
@@ -311,7 +312,7 @@ void HIGHSCORES()
 
 void mousePressed()
 {
-  if (currentState == gameStates.INGAME) bullets.addBullet();
+  if (currentState == gameStates.INGAME && !paused) bullets.addBullet();
 }
 
 void keyReleased()
