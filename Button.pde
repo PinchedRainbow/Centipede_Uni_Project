@@ -27,10 +27,6 @@ class Button
   boolean isClicked()
   {
     if (!mousePressed) return false;
-    if (mouseX >= x && mouseX <= x + buttonWidth && mouseY >= y && mouseY <= y + buttonHeight)
-    {
-      return true;
-    }
-    else{ return false; }
+    return (mouseX >= x && mouseX <= x + buttonWidth && mouseY >= y && mouseY <= y + buttonHeight);
   }
 }

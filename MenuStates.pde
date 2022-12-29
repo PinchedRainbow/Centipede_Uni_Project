@@ -49,7 +49,7 @@ void ENTERNAME()
 
   fill(255);
   text(playerName, width/2, height/2);
-  
+
   drawPixelsBackground();
 
   //if (keyPressed)
@@ -82,8 +82,10 @@ void HOWTOPLAY()
   // go back button time
   Button goBack = new Button(100, height-100, "Menu");
   goBack.showButton();
-  if (goBack.isClicked()) { currentState = gameStates.MENU; }
-  
+  if (goBack.isClicked()) {
+    currentState = gameStates.MENU;
+  }
+
   //fill(#5F5B5B);
   //rect(100, height-100, buttonWidth, buttonHeight, buttonRadius);
   //fill(255);
@@ -184,16 +186,22 @@ void MENU()
   Button playButton = new Button(width/2-buttonWidth/2, height/3, "Play");
   Button howtoPlayButtn = new Button(width/2-buttonWidth/2, height-100, "How to play");
   Button highScoresButton = new Button(100-buttonWidth/2, height-100, "HighScores");
- // Button customGame = new Button(100-buttonWidth/2, height/3, "Custom");
-  
+  // Button customGame = new Button(100-buttonWidth/2, height/3, "Custom");
+
   playButton.showButton();
   howtoPlayButtn.showButton();
   highScoresButton.showButton();
- // customGame.showButton();
-  
-  if (playButton.isClicked()) { StartGame(); }
-  if (howtoPlayButtn.isClicked()) { currentState = gameStates.HOWTOPLAY; }
-  if (highScoresButton.isClicked()) { currentState = gameStates.HIGHSCORES; }
+  // customGame.showButton();
+
+  if (playButton.isClicked()) {
+    StartGame();
+  }
+  if (howtoPlayButtn.isClicked()) {
+    currentState = gameStates.HOWTOPLAY;
+  }
+  if (highScoresButton.isClicked()) {
+    currentState = gameStates.HIGHSCORES;
+  }
 
   //  // button 2
   //  fill(#5F5B5B);
@@ -206,7 +214,7 @@ void MENU()
   //rect(width/2-buttonWidth/2, height-100, buttonWidth, buttonHeight, buttonRadius);
   //fill(255);
   //text("How to play", width/2, (height-100) + buttonHeight/2);
-  
+
   //// BUTTON 4
   //fill(#5F5B5B);
   //rect(100-buttonWidth/2, height-100, buttonWidth, buttonHeight, buttonRadius);
@@ -362,48 +370,57 @@ void HIGHSCORES()
 {
   background(#111822);
   drawPixelsBackground();
-  
+
   textAlign(CENTER);
   textSize(50);
   text("Top Highscores", width/2, 80);
-  
+
   textAlign(LEFT);
   text("Name", 15, 150);
   textAlign(CENTER);
   text("Score", width/2, 150);
   textAlign(RIGHT);
   text("Level", width-15, 150);
-  
+
   //String wholeString = "Name | Score | Level";
   //text(wholeString, width/2, 150);
   int x = 200;
   textSize(40);
-  
+
   highscoreTable.sort(0);
-  
-  for (TableRow row : highscoreTable.rows())
+
+  if (highscoreTable.getRowCount() == 0)
   {
-    String name = row.getString("Name");
-    int score = row.getInt("Score");
-    int level = row.getInt("Level");
-    
-    //String rowString = name + " | " + score + " | " + level;
-    //text(rowString, width/2, 200 + x);
-    
-    textAlign(LEFT);
-    text(name, 15, x);
     textAlign(CENTER);
-    text(score, width/2, x);
-    textAlign(RIGHT);
-    text(level, width-15, x);
-    
-    x+=50;
+    textSize(40);
+    text("No highscores at this moment in time :0", width/2, height/2);
+  } else {
+
+    for (TableRow row : highscoreTable.rows())
+    {
+      String name = row.getString("Name");
+      int score = row.getInt("Score");
+      int level = row.getInt("Level");
+
+      //String rowString = name + " | " + score + " | " + level;
+      //text(rowString, width/2, 200 + x);
+
+      textAlign(LEFT);
+      text(name, 15, x);
+      textAlign(CENTER);
+      text(score, width/2, x);
+      textAlign(RIGHT);
+      text(level, width-15, x);
+
+      x+=50;
+    }
   }
-  
+
   Button menu = new Button(width-100-buttonWidth/2, height-100, "Menu");
   menu.showButton();
-  if (menu.isClicked()) {currentState = gameStates.MENU; }
-  
+  if (menu.isClicked()) {
+    currentState = gameStates.MENU;
+  }
 }
 
 void mousePressed()
