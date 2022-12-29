@@ -21,7 +21,7 @@ class Mushroom
 
   void display()
   {
-    if (damageState < 3)
+    if (damageState < 4)
     {
       sizeMushy = size/damageState;
       //rectMode(CORNER);
@@ -92,6 +92,6 @@ class MushroomsList
 
   boolean validatePos(int x, int y)
   {
-    return x == 0 || x == width/size || y == 0 || y >= (width/size)-1;
+    return x == 0 || x == width/size || y == 0 || y >= (width/size)-2;
   }
 }

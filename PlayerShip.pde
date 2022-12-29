@@ -5,16 +5,14 @@ class Player
   int speed;
   private int x;
   private int y;
-  private boolean useMouseToMove;
   float size;
   PImage img;
 
-  Player(int x, int y, int speed, boolean useMouse, float size)
+  Player(int x, int y, int speed, float size)
   {
     this.x = x;
     this.y = y;
     this.speed = speed;
-    this.useMouseToMove = useMouse;
     this.size = size;
 
     int d = int(random(1, 100));
@@ -84,7 +82,6 @@ void keyPressed()
   if (key != CODED) return;
   if (playerShip == null) return;
   if (currentState != gameStates.INGAME) return;
-  if (playerShip.useMouseToMove) return;
 
   //if (keyCode == LEFT && playerShip.getX() > 0 + playerShip.size/2) playerShip.setX(playerShip.x-=playerShip.speed);
   //if (keyCode == RIGHT && playerShip.x < width - playerShip.size/2) playerShip.setX(playerShip.x+=playerShip.speed);

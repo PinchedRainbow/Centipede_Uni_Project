@@ -3,20 +3,6 @@ import java.util.Scanner;
 
 Table highscoreTable;
 
-enum gameStates
-{
-  MENU,
-    INGAME,
-    GAMEOVER,
-    PAUSE,
-    SETTINGS,
-    WIN,
-    SPLASH,
-    HOWTOPLAY,
-    ENTERNAME,
-    HIGHSCORES
-}
-
 gameStates currentState; 
 
 int speed = 10; 
@@ -24,8 +10,7 @@ int size = 20;
 int playerScore = 0;
 int COOLDOWN = 400;
 long lastShot = System.currentTimeMillis();
-PImage[] centiBodies = new PImage[8];
-PImage[] centiHeads = new PImage[8];
+
 PImage city;
 
 String playerName = "";
@@ -58,9 +43,13 @@ void loadAssets()
   {
     centiBodies[i] = loadImage("images/body" + (i+1) + ".png");
     centiHeads[i] = loadImage("images/head" + (i+1) + ".png");
+    
+    scorpions[i] = loadImage("images/s" + i + ".png");
 
     centiBodies[i].resize(size, size);
     centiHeads[i].resize(size, size);
+    
+    scorpions[i].resize(size+int(size/2), 0);
   }
 
   city = loadImage("images/city.png");

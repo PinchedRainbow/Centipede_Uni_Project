@@ -1,14 +1,20 @@
 import java.util.Iterator;
 
 ArrayList<Centipede> enemies = new ArrayList<>();
+ArrayList<Scorpion> scorpies = new ArrayList<>();
 ArrayList<Centipede> toAddEnemies = new ArrayList<>();
+
+PImage[] centiBodies = new PImage[8];
+PImage[] centiHeads = new PImage[8];
+
+PImage[] scorpions = new PImage[8];
 
 Bullet bulletToRemove = null;
 SoundFile splitSound;
 
 void updateEnemies()
 {
-  if (enemies.size() == 0)
+  if (getNumberofEnemies() == 0)
   {
     currentState = gameStates.WIN;
     levelUp.play();
@@ -47,12 +53,12 @@ void updateEnemies()
 
           changeScore(10);
 
-          
+
 
           //toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, newSize, 1));
           //toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, resultOfBulletCollision, -1));
         }
-        
+
         splitSound.play();
       }
 
@@ -66,6 +72,19 @@ void updateEnemies()
 
     enemies.addAll(toAddEnemies);
     toAddEnemies.clear();
+
+
+    Iterator<Scorpion> sIter = scorpies.iterator();
+    while (sIter.hasNext())
+    {
+      Scorpion s = sIter.next();
+      s.update();
+      if (s.bulletCollision())
+      {
+        sIter.remove();
+        changeScore(300);
+      }
+    }
   }
 }
 
@@ -75,24 +94,30 @@ void resetEnemies()
   {
     enemy.y=0;
   }
+  for (Scorpion s : scorpies)
+  {
+    s.y=0;
+  }
 }
 
 
 void generateEnemies()
 {
   enemies.clear();
+  scorpies.clear();
   for (int i = 0; i < Level.getLevel(); i++)
   {
     int direction;
     if (i%2==0) direction = 1;
     else direction = -1;
     enemies.add(new Centipede(returningX(), 0, int(random(8, 15)), direction));
+    scorpies.add(new Scorpion(int(random(0, width-size)), 0));
   }
 }
 
 int getNumberofEnemies()
 {
-  return enemies.size();
+  return enemies.size() + scorpies.size();
 }
 
 int returningX()
@@ -138,19 +163,109 @@ abstract class BaseEnemy
     // returning true until construcuted
     return true;
   }
+
+  boolean collisionWithMushroom()
+  {
+    for (Mushroom mush : mushList.mushrooms)
+    {
+      // check for any collision left and right
+      if (x >= mush.x && x <= mush.x + size && y >= mush.y && y <= mush.y + size) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 
-// Subclass Centipede
+
 
 // Subclass Scorpion
+class Scorpion extends BaseEnemy
+{
+  int dx, dy;
+  int imageIndex = 0;
+
+  Scorpion(int x, int y)
+  {
+    this.x = x;
+    this.y = y;
+    //this.img = scorpions[imageIndex];
+    this.dx = int(random(1, 4));
+    this.dy = int(random(1, 4));
+  }
+
+  void update()
+  {
+    move();
+    display();
+
+    if (x%size==0 || y%size==0)
+    {
+      if (imageIndex < scorpions.length-1)
+      {
+        imageIndex++;
+      } else imageIndex = 0;
+    }
+
+
+    if (collisionWithMushroom())
+    {
+      //changeDirection();
+      //dy*=-1;
+      //dx*=-1;
+    }
+    if (y <= 0 || y >= height-size)
+    {
+      dy*=-1;
+      //changeDirection();
+    }
+    if (x <= 0 || x >= width-size)
+    {
+      dx*=-1;
+      //changeDirection();
+    }
+  }
+
+  void move()
+  {
+    x+=dx;
+    y+=dy;
+  }
+
+  void display()
+  {
+    imageMode(CENTER);
+    image(scorpions[imageIndex], x, y);
+  }
+
+  void changeDirection()
+  {
+    dy = int(random(1, 4));
+    dx = int(random(1, 4));
+  }
+
+  boolean bulletCollision()
+  {
+    for (Bullet bully: bullets.bulletsList)
+    {
+      if (bully.x >= x && bully.x <= x + size && bully.y >= y && bully.y <= y + size)
+      {
+        bulletToRemove = bully;
+        return true;
+      }
+    }
+
+    return false;
+  }
+}
+
 
 // ---------- End of hell
 
-
+// Subclass Centipede
 class Centipede extends BaseEnemy
 {
-  int x, y;
   int sizeOfBody = int(random(10, 12));
   int dx = speed/2;
   PVector[] bodyPos;
@@ -293,17 +408,5 @@ class Centipede extends BaseEnemy
       }
     }
     return -1;
-  }
-
-  boolean collisionWithMushroom()
-  {
-    for (Mushroom mush : mushList.mushrooms)
-    {
-      // check for any collision left and right
-      if (x >= mush.x && x <= mush.x + size && y >= mush.y && y <= mush.y + size) {
-        return true;
-      }
-    }
-    return false;
   }
 }

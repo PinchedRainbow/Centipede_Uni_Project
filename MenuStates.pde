@@ -24,6 +24,20 @@ SoundFile splashSound;
 SoundFile gameOver;
 boolean played = false;
 
+enum gameStates
+{
+  MENU,
+    INGAME,
+    GAMEOVER,
+    PAUSE,
+    SETTINGS,
+    WIN,
+    SPLASH,
+    HOWTOPLAY,
+    ENTERNAME,
+    HIGHSCORES
+}
+
 
 void ENTERNAME()
 {
@@ -35,6 +49,8 @@ void ENTERNAME()
 
   fill(255);
   text(playerName, width/2, height/2);
+  
+  drawPixelsBackground();
 
   //if (keyPressed)
   //{
@@ -54,6 +70,8 @@ void HOWTOPLAY()
   textSize(60);
   text("How to play", width/2, 100);
 
+  drawPixelsBackground();
+
   fill(200);
   textSize(20);
   text("Welcome to Centipede!\nThe aim of the game is to destory each enemy in the level and get the highest score possible!\nYou have the option to control the player with Keyboard or Mouse\n"+
@@ -62,20 +80,26 @@ void HOWTOPLAY()
     "\nHere is how the score is awarded:\nCentipede head: 100\nCentipede body: 10\nMushroom: 4\nYou can also pause by pressing P ;)", width/2, 140);
 
   // go back button time
-  fill(#5F5B5B);
-  rect(100, height-100, buttonWidth, buttonHeight, buttonRadius);
-  fill(255);
-  text("Menu", 100 + buttonWidth/2, (height-100) + buttonHeight/2);
+  Button goBack = new Button(100, height-100, "Menu");
+  goBack.showButton();
+  if (goBack.isClicked()) { currentState = gameStates.MENU; }
+  
+  //fill(#5F5B5B);
+  //rect(100, height-100, buttonWidth, buttonHeight, buttonRadius);
+  //fill(255);
+  //text("Menu", 100 + buttonWidth/2, (height-100) + buttonHeight/2);
 
-  if (mousePressed)
-  {
-    if (mouseX > 100 && mouseX < 100 + buttonWidth && mouseY > height-100 && mouseY < (height-100) + buttonHeight) currentState = gameStates.MENU;
-  }
+  //if (mousePressed)
+  //{
+  //  if (mouseX > 100 && mouseX < 100 + buttonWidth && mouseY > height-100 && mouseY < (height-100) + buttonHeight) currentState = gameStates.MENU;
+  //}
 }
 
 void SPLASH()
 {
   background(#111822);
+
+  drawPixelsBackground();
 
   textSize(30);
   fill(alpha);
@@ -137,60 +161,85 @@ void drawCity()
 }
 
 
+
 void MENU()
 {
   background(#111822);
+
+  drawPixelsBackground();
+
   textAlign(CENTER);
   //text("Press A for mouse movement", width/2, height/3);
   //text("Press B for keyboard movement", width/2, height/3+30);
 
   textSize(60);
-  text("Play with", width/2, height/4);
+  text("Click to play!", width/2, height/4);
 
   // button 1
-  fill(#5F5B5B);
-  rect(width/4, height/3, buttonWidth, buttonHeight, buttonRadius);
-  textSize(30);
-  fill(255);
-  text("Mouse", width/4 + buttonWidth/2, height/3 + buttonHeight/2);
+  //fill(#5F5B5B);
+  //rect(width/2-buttonWidth/2, height/3, buttonWidth, buttonHeight, buttonRadius);
+  //textSize(30);
+  //fill(255);
+  //text("Play", width/2-buttonWidth/2 + buttonWidth/2, height/3 + buttonHeight/2);
+  Button playButton = new Button(width/2-buttonWidth/2, height/3, "Play");
+  Button howtoPlayButtn = new Button(width/2-buttonWidth/2, height-100, "How to play");
+  Button highScoresButton = new Button(100-buttonWidth/2, height-100, "HighScores");
+ // Button customGame = new Button(100-buttonWidth/2, height/3, "Custom");
+  
+  playButton.showButton();
+  howtoPlayButtn.showButton();
+  highScoresButton.showButton();
+ // customGame.showButton();
+  
+  if (playButton.isClicked()) { StartGame(); }
+  if (howtoPlayButtn.isClicked()) { currentState = gameStates.HOWTOPLAY; }
+  if (highScoresButton.isClicked()) { currentState = gameStates.HIGHSCORES; }
 
-  // button 2
-  fill(#5F5B5B);
-  rect(width/4 * 2, height/3, buttonWidth, buttonHeight, buttonRadius);
-  fill(255);
-  text("Keyboard", (width/4 * 2) + buttonWidth/2, height/3 + buttonHeight/2);
+  //  // button 2
+  //  fill(#5F5B5B);
+  //  rect(width/4 * 2, height/3, buttonWidth, buttonHeight, buttonRadius);
+  //  fill(255);
+  //  text("Keyboard", (width/4 * 2) + buttonWidth/2, height/3 + buttonHeight/2);
 
-  // button 3
-  fill(#5F5B5B);
-  rect(width/2-buttonWidth/2, height-100, buttonWidth, buttonHeight, buttonRadius);
-  fill(255);
-  text("How to play", width/2, (height-100) + buttonHeight/2);
+  //// button 3
+  //fill(#5F5B5B);
+  //rect(width/2-buttonWidth/2, height-100, buttonWidth, buttonHeight, buttonRadius);
+  //fill(255);
+  //text("How to play", width/2, (height-100) + buttonHeight/2);
+  
+  //// BUTTON 4
+  //fill(#5F5B5B);
+  //rect(100-buttonWidth/2, height-100, buttonWidth, buttonHeight, buttonRadius);
+  //fill(255);
+  //text("Highscores", 100, (height-100) + buttonHeight/2);
 
   textSize(40);
   text("Current game info", width/2, height/2+60);
   text("Lives: " + Lives.getLives() + " | Level: " + Level.getLevel() + " | Score: " + playerScore + "\n" + playerName, width/2, height/2+100);
 
-  if (mousePressed) {
-    if (mouseX > width/4 && mouseX < width/4 + buttonWidth && mouseY > height/3 && mouseY < height/3 + buttonHeight)
-    {
-      StartGame(true);
-    } else if (mouseX > (width/4)*2 && mouseX < (width/4)*2 + buttonWidth && mouseY > height/3 && mouseY < height/3 + buttonHeight)
-    {
-      StartGame(false);
-    } else if (mouseX > width/2-buttonWidth/2 && mouseX < width/2 + buttonWidth/2 && mouseY > height-100 && mouseY < (height-100) + buttonHeight) currentState = gameStates.HOWTOPLAY;
-  }
+  //if (mousePressed) {
+  //  if (mouseX > width/2-buttonWidth/2 && mouseX < width/2 + buttonWidth/2 && mouseY > height/3 && mouseY < height/3 + buttonHeight)
+  //  {
+  //    StartGame();
+  //    //} else if (mouseX > (width/4)*2 && mouseX < (width/4)*2 + buttonWidth && mouseY > height/3 && mouseY < height/3 + buttonHeight)
+  //    //{
+  //    //  StartGame(false);
+  //  } else if (mouseX > width/2-buttonWidth/2 && mouseX < width/2 + buttonWidth/2 && mouseY > height-100 && mouseY < (height-100) + buttonHeight) currentState = gameStates.HOWTOPLAY;
+  //}
 }
 
-void StartGame(boolean useMouse)
+void StartGame()
 {
   SetLevel = false;
   resetEnemies();
   generateEnemies();
-  playerShip = new Player(width/2, height-20, speed, useMouse, size);
+  playerShip = new Player(width/2, height-20, speed, size);
   //playerShip = new Player(width/2, height/2, speed, useMouse, size);
   currentState = gameStates.INGAME;
 }
 
+
+//Scorpion s = new Scorpion(50,400);
 
 void INGAME()
 {
@@ -212,6 +261,7 @@ void INGAME()
     playerShip.update();
     bullets.updateBullets();
     updateEnemies();
+    //s.update();
   } else {
     fill(0, 255/2);
     rect(0, 0, width, height);
@@ -246,6 +296,8 @@ void GAMEOVER()
     if (key == 'm' || key == 'M')
     {
       saveHighscore(playerName, playerScore, Level.getLevel());
+      playerName = "";
+      key = ' ';
       SetLevel = false;
       bullets.clearBullets();
       generateEnemies();
@@ -308,6 +360,50 @@ void SETTINGS()
 
 void HIGHSCORES()
 {
+  background(#111822);
+  drawPixelsBackground();
+  
+  textAlign(CENTER);
+  textSize(50);
+  text("Top Highscores", width/2, 80);
+  
+  textAlign(LEFT);
+  text("Name", 15, 150);
+  textAlign(CENTER);
+  text("Score", width/2, 150);
+  textAlign(RIGHT);
+  text("Level", width-15, 150);
+  
+  //String wholeString = "Name | Score | Level";
+  //text(wholeString, width/2, 150);
+  int x = 200;
+  textSize(40);
+  
+  highscoreTable.sort(0);
+  
+  for (TableRow row : highscoreTable.rows())
+  {
+    String name = row.getString("Name");
+    int score = row.getInt("Score");
+    int level = row.getInt("Level");
+    
+    //String rowString = name + " | " + score + " | " + level;
+    //text(rowString, width/2, 200 + x);
+    
+    textAlign(LEFT);
+    text(name, 15, x);
+    textAlign(CENTER);
+    text(score, width/2, x);
+    textAlign(RIGHT);
+    text(level, width-15, x);
+    
+    x+=50;
+  }
+  
+  Button menu = new Button(width-100-buttonWidth/2, height-100, "Menu");
+  menu.showButton();
+  if (menu.isClicked()) {currentState = gameStates.MENU; }
+  
 }
 
 void mousePressed()
@@ -375,7 +471,7 @@ void drawGameUI()
   textSize(20);
   text("Level " + Level.getLevel(), width-5, 60);
 
- // drawCity();
+  // drawCity();
 
   for (int i = 0; i < Lives.getLives(); i++)
   {
