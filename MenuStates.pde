@@ -362,7 +362,7 @@ void PAUSE()
   text("Lives: " + Lives.getLives() + " | Level: " + Level.getLevel() + " | Score: " + playerScore, width/2, height/3+40);
 }
 
-void SETTINGS()
+void SETTING()
 {
 }
 

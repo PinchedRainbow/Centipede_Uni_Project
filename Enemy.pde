@@ -183,16 +183,16 @@ abstract class BaseEnemy
 // Subclass Scorpion
 class Scorpion extends BaseEnemy
 {
-  int dx, dy;
+  float dx, dy;
   int imageIndex = 0;
+  float speed;
 
   Scorpion(int x, int y)
   {
     this.x = x;
     this.y = y;
     //this.img = scorpions[imageIndex];
-    this.dx = int(random(1, 4));
-    this.dy = int(random(1, 4));
+    this.speed = Level.getLevel() + 1;
   }
 
   void update()
@@ -209,26 +209,29 @@ class Scorpion extends BaseEnemy
     }
 
 
-    if (collisionWithMushroom())
-    {
-      //changeDirection();
-      //dy*=-1;
-      //dx*=-1;
-    }
-    if (y <= 0 || y >= height-size)
-    {
-      dy*=-1;
-      //changeDirection();
-    }
-    if (x <= 0 || x >= width-size)
-    {
-      dx*=-1;
-      //changeDirection();
-    }
+    //if (collisionWithMushroom())
+    //{
+    //  //changeDirection();
+    //  //dy*=-1;
+    //  //dx*=-1;
+    //}
+    //if (y <= 0 || y >= height-size)
+    //{
+    //  dy*=-1;
+    //  //changeDirection();
+    //}
+    //if (x <= 0 || x >= width-size)
+    //{
+    //  dx*=-1;
+    //  //changeDirection();
+    //}
   }
 
   void move()
   {
+    float angle = atan2(playerShip.y-y, playerShip.x-x) + random(-0.2, 0.2);
+    dx = cos(angle) * speed;
+    dy = sin(angle) * speed;
     x+=dx;
     y+=dy;
   }
@@ -247,7 +250,7 @@ class Scorpion extends BaseEnemy
 
   boolean bulletCollision()
   {
-    for (Bullet bully: bullets.bulletsList)
+    for (Bullet bully : bullets.bulletsList)
     {
       if (bully.x >= x && bully.x <= x + size && bully.y >= y && bully.y <= y + size)
       {
