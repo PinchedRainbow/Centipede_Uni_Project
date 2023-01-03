@@ -186,11 +186,13 @@ void MENU()
   Button playButton = new Button(width/2-buttonWidth/2, height/3, "Play");
   Button howtoPlayButtn = new Button(width/2-buttonWidth/2, height-100, "How to play");
   Button highScoresButton = new Button(100-buttonWidth/2, height-100, "HighScores");
+  Button settingsButton = new Button(width-100-buttonWidth/2, height-100, "Settings");
   // Button customGame = new Button(100-buttonWidth/2, height/3, "Custom");
 
   playButton.showButton();
   howtoPlayButtn.showButton();
   highScoresButton.showButton();
+  settingsButton.showButton();
   // customGame.showButton();
 
   if (playButton.isClicked()) {
@@ -202,7 +204,10 @@ void MENU()
   if (highScoresButton.isClicked()) {
     currentState = gameStates.HIGHSCORES;
   }
-
+  if (settingsButton.isClicked())
+  {
+    currentState = gameStates.SETTINGS;
+  }
   //  // button 2
   //  fill(#5F5B5B);
   //  rect(width/4 * 2, height/3, buttonWidth, buttonHeight, buttonRadius);

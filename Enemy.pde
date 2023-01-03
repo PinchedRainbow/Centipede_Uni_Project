@@ -177,7 +177,13 @@ abstract class BaseEnemy
   }
 }
 
-
+void callGameOver()
+{
+  gameOver.play();
+  Lives.setLives(Lives.getLives()-1);
+  if (Lives.getLives() <= 0) currentState = gameStates.GAMEOVER;
+  else currentState = gameStates.MENU;
+}
 
 
 // Subclass Scorpion
@@ -206,6 +212,11 @@ class Scorpion extends BaseEnemy
       {
         imageIndex++;
       } else imageIndex = 0;
+    }
+
+    if (abs(x-playerShip.x) < (scorpions[imageIndex].width + playerShip.size)/2 && abs(y-playerShip.y) < (scorpions[imageIndex].height + playerShip.size) / 2)
+    {
+      callGameOver();
     }
 
 
@@ -364,10 +375,7 @@ class Centipede extends BaseEnemy
     }
     if (y >= height)
     {
-      gameOver.play();
-      Lives.setLives(Lives.getLives()-1);
-      if (Lives.getLives() <= 0) currentState = gameStates.GAMEOVER;
-      else currentState = gameStates.MENU;
+      callGameOver();
     }
   }
 
