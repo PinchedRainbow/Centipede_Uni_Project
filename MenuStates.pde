@@ -266,6 +266,7 @@ void INGAME()
   if (!paused)
   {
     //drawPixelsBackground();
+    drawCity();
     playerShip.update();
     bullets.updateBullets();
     updateEnemies();
@@ -273,6 +274,7 @@ void INGAME()
   } else {
     fill(0, 255/2);
     rect(0, 0, width, height);
+    drawCity();
     PAUSE();
   }
 

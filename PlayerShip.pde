@@ -15,14 +15,16 @@ class Player
     this.speed = speed;
     this.size = size;
 
-    int d = int(random(1, 100));
-    if (d <= 50)
-    {
-      img = loadImage("images/player.png");
-    } else
-    {
-      img = loadImage("images/player2.png");
-    }
+    this.img = playerImg;
+
+    //int d = int(random(1, 100));
+    //if (d <= 50)
+    //{
+    //  img = loadImage("images/player.png");
+    //} else
+    //{
+    //  img = loadImage("images/player2.png");
+    //}
 
     img.resize(int(size), 0);
   }

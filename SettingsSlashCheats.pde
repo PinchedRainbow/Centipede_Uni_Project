@@ -7,5 +7,9 @@ void SETTINGS()
   background(#111822);
   drawPixelsBackground();
 
-  // input for 
+  // could just show all the different players so they can select it...
+  
+  
+  
+  
 }

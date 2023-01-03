@@ -12,6 +12,8 @@ int COOLDOWN = 400;
 long lastShot = System.currentTimeMillis();
 
 PImage city;
+PImage playerImg;
+ArrayList<PImage> characters = new ArrayList<>();
 
 String playerName = "";
 SoundFile keySFX;
@@ -53,6 +55,14 @@ void loadAssets()
   }
 
   city = loadImage("images/city.png");
+  
+  for (int i = 0; i < 2; i++)
+  {
+    characters.add(loadImage("images/player" + i + ".png"));
+  }
+  
+  playerImg =loadImage("images/player.png");
+  
 }
 
 void createHighscore()
