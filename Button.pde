@@ -6,6 +6,8 @@ class Button
   int x, y;
   String text;
   float radius;
+  float stroke;
+  float fill;
 
   Button(int x, int y, String text)
   {
@@ -16,7 +18,10 @@ class Button
   
   void showButton()
   {
-    fill(#5F5B5B);
+    float distance = dist(mouseX, mouseY, x+buttonWidth/2, y+buttonHeight/2);
+    stroke(255, distance, distance);
+    fill(#5F5B5B, 50+distance);
+    
     rect(x, y, buttonWidth, buttonHeight, buttonRadius);
     fill(255);
     textAlign(CENTER);

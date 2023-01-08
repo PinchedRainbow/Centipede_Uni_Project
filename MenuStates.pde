@@ -74,13 +74,13 @@ void HOWTOPLAY()
 
   fill(200);
   textSize(20);
-  text("Welcome to Centipede!\nThe aim of the game is to destory each enemy in the level and get the highest score possible!\nYou have the option to control the player with Keyboard or Mouse\n"+
-    "Press the mouse button or spacebar to shoot a bullet\nAim for the head of the centipede to destory in one go!\nOtherwise it gets into a bit of a mess :D\nDestory the mushrooms to make an easier path for the bullets" +
-    "\nDon't let any enemy touch the bottom of the screen.. otherwise.. life taken away :(" +
-    "\nHere is how the score is awarded:\nCentipede head: 100\nCentipede body: 10\nMushroom: 4\nYou can also pause by pressing P ;)", width/2, 140);
+  text("Welcome to Centipede!\nThe aim is to destory each enemy in the level and get the highest score possible!\n"+
+    "Press the mouse button or spacebar to shoot a bullet\nAim for the head of the centipede to destory in one go!\nOtherwise it gets into a bit of a mess D:\nYou may shoot the mushrooms to make an easier path" +
+    "\nDon't let anything get to the city or you.. otherwise.. life taken away :(" +
+    "\nHere is how the score is awarded:\nCentipede head: 100\nCentipede body: 10\nMushroom: 4\nSpider: 300\nIf ever needed, you can pause by pressing P ;)", width/2, 140);
 
   // go back button time
-  Button goBack = new Button(100, height-100, "Menu");
+  Button goBack = new Button(width/2-buttonWidth/2, height/4*3, "Menu");
   goBack.showButton();
   if (goBack.isClicked()) {
     currentState = gameStates.MENU;
@@ -126,7 +126,7 @@ void SPLASH()
   if (!played)
   {
     played = !played;
-    splashSound.play();
+    if (soundEnabled) splashSound.play();
   }
 
   if (alpha <= 255)
@@ -159,6 +159,7 @@ void SPLASH()
 
 void drawCity()
 {
+  imageMode(CORNERS);
   image(city, 0, height-150);
 }
 
@@ -175,7 +176,9 @@ void MENU()
   //text("Press B for keyboard movement", width/2, height/3+30);
 
   textSize(60);
-  text("Click to play!", width/2, height/4);
+  text("Time to play!", width/2, height/5);
+  textSize(20);
+  text("Did you know you can disable sound in settings :0", width/2, height/5+40);
 
   // button 1
   //fill(#5F5B5B);
@@ -183,10 +186,10 @@ void MENU()
   //textSize(30);
   //fill(255);
   //text("Play", width/2-buttonWidth/2 + buttonWidth/2, height/3 + buttonHeight/2);
-  Button playButton = new Button(width/2-buttonWidth/2, height/3, "Play");
-  Button howtoPlayButtn = new Button(width/2-buttonWidth/2, height-100, "How to play");
-  Button highScoresButton = new Button(100-buttonWidth/2, height-100, "HighScores");
-  Button settingsButton = new Button(width-100-buttonWidth/2, height-100, "Settings");
+  Button playButton = new Button(width/3-buttonWidth/2, height/3, "Play");
+  Button howtoPlayButtn = new Button(width/3-buttonWidth/2, height-100, "How to play");
+  Button highScoresButton = new Button(width/3*2-buttonWidth/2, height-100, "HighScores");
+  Button settingsButton = new Button(width/3*2 -buttonWidth/2, height/3, "Settings");
   // Button customGame = new Button(100-buttonWidth/2, height/3, "Custom");
 
   playButton.showButton();
@@ -208,6 +211,8 @@ void MENU()
   {
     currentState = gameStates.SETTINGS;
   }
+
+
   //  // button 2
   //  fill(#5F5B5B);
   //  rect(width/4 * 2, height/3, buttonWidth, buttonHeight, buttonRadius);
@@ -226,9 +231,21 @@ void MENU()
   //fill(255);
   //text("Highscores", 100, (height-100) + buttonHeight/2);
 
+
+  fill(255);
+  stroke(255);
+  strokeWeight(3);
+  line(width/6, height/2, width/6*5, height/2);
+  line(width/6, height/5*4+10, width/6*5, height/5*4+10);
+  line(width/6, height/2, width/6, height/5*4+10);
+  line(width/6*5, height/2, width/6*5, height/5*4+10);
+  line(width/6, height/2+125, width/6*5, height/2+125);
+
   textSize(40);
   text("Current game info", width/2, height/2+60);
-  text("Lives: " + Lives.getLives() + " | Level: " + Level.getLevel() + " | Score: " + playerScore + "\n" + playerName, width/2, height/2+100);
+  text("Lives: " + Lives.getLives() + " | Level: " + Level.getLevel() + " | Score: " + playerScore + "\n" +"You are our only saviour\n" + playerName, width/2, height/2+100);
+
+  strokeWeight(1);
 
   //if (mousePressed) {
   //  if (mouseX > width/2-buttonWidth/2 && mouseX < width/2 + buttonWidth/2 && mouseY > height/3 && mouseY < height/3 + buttonHeight)
@@ -369,9 +386,6 @@ void PAUSE()
   text("Lives: " + Lives.getLives() + " | Level: " + Level.getLevel() + " | Score: " + playerScore, width/2, height/3+40);
 }
 
-void SETTING()
-{
-}
 
 void HIGHSCORES()
 {
@@ -450,10 +464,10 @@ void keyReleased()
     if (key == BACKSPACE)
     {
       playerName = removeLastChar(playerName);
-      keySFX.play();
+      if (soundEnabled) keySFX.play();
     } else if (key != CODED && key != ENTER && playerName.length() < 20) {
       playerName+=key;
-      keySFX.play();
+      if (soundEnabled) keySFX.play();
     }
   }
 }
@@ -499,6 +513,7 @@ void drawGameUI()
 
   for (int i = 0; i < Lives.getLives(); i++)
   {
+    imageMode(CENTER);
     PImage live = playerShip.img;
     image(live, ((i*(size*1.5)))+20, height-20);
   }

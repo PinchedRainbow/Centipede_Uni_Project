@@ -17,7 +17,7 @@ void updateEnemies()
   if (getNumberofEnemies() == 0)
   {
     currentState = gameStates.WIN;
-    levelUp.play();
+    if (soundEnabled) levelUp.play();
   } else {
     Iterator<Centipede> enemyIter = enemies.iterator();
     while (enemyIter.hasNext())
@@ -59,7 +59,7 @@ void updateEnemies()
           //toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, resultOfBulletCollision, -1));
         }
 
-        splitSound.play();
+        if (soundEnabled) splitSound.play();
       }
 
       //if (currentEnemy.sizeOfBody == 1)
@@ -110,8 +110,8 @@ void generateEnemies()
     int direction;
     if (i%2==0) direction = 1;
     else direction = -1;
-    enemies.add(new Centipede(returningX(), 0, int(random(8, 15)), direction));
-    scorpies.add(new Scorpion(int(random(0, width-size)), 0));
+    enemies.add(new Centipede(returningX(), 0, int(random(6, 2000)), direction));
+    if (spiders) scorpies.add(new Scorpion(int(random(-200, width+200)), int(random(-3000, -25)))); scorpies.add(new Scorpion(int(random(-200, width+200)), int(random(-3000, -25))));
   }
 }
 
@@ -179,7 +179,7 @@ abstract class BaseEnemy
 
 void callGameOver()
 {
-  gameOver.play();
+  if (soundEnabled) gameOver.play();
   Lives.setLives(Lives.getLives()-1);
   if (Lives.getLives() <= 0) currentState = gameStates.GAMEOVER;
   else currentState = gameStates.MENU;
@@ -192,6 +192,7 @@ class Scorpion extends BaseEnemy
   float dx, dy;
   int imageIndex = 0;
   float speed;
+  float randomness = 0.6;
 
   Scorpion(int x, int y)
   {
@@ -240,7 +241,7 @@ class Scorpion extends BaseEnemy
 
   void move()
   {
-    float angle = atan2(playerShip.y-y, playerShip.x-x) + random(-0.2, 0.2);
+    float angle = atan2(playerShip.y-y, playerShip.x-x) + random(-randomness, randomness);
     dx = cos(angle) * speed;
     dy = sin(angle) * speed;
     x+=dx;

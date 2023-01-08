@@ -35,6 +35,7 @@ class Mushroom
       img.resize(size, int(sizeMushy));
       noTint();
     } else {
+      //explode();
       x = -100;
       y = -100;
     }
@@ -44,7 +45,7 @@ class Mushroom
   {
     if (bullet.x >= x && bullet.x <= x + size && bullet.y >= y && bullet.y <= y + size)
     {
-      hit.play();
+      if (soundEnabled) hit.play();
       damageState++;
       changeScore(4);
       //println("Mushroom damaged, at state of " + damageState);
@@ -52,6 +53,30 @@ class Mushroom
       //bullets.removeBullet(bullet);
     }
     return false;
+  }
+
+  void explode()
+  {
+    // compute a random displacement for each vertex
+    float x1 = random(-50, 50);
+    float y1 = random(-50, 50);
+    float x2 = random(-50, 50);
+    float y2 = random(-50, 50);
+    float x3 = random(-50, 50);
+    float y3 = random(-50, 50);
+    float x4 = random(-50, 50);
+    float y4 = random(-50, 50);
+
+    // draw the distorted image using the displaced vertices
+    image(img, x, y);
+    noStroke();
+    fill(255, 255, 255, 150);
+    beginShape();
+    vertex(x + x1, y + y1);
+    vertex(img.width + x2, y + y2);
+    vertex(img.width + x3, img.height + y3);
+    vertex(x + x4, img.height + y4);
+    endShape(CLOSE);
   }
 }
 
@@ -78,6 +103,10 @@ class MushroomsList
 
       mushrooms.add(new Mushroom(x*multWidth, y*multHeight));
     }
+  }
+  
+  void checkForDamage()
+  {
   }
 
   void spawnMushroom(int x, int y)

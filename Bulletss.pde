@@ -36,7 +36,6 @@ class Bullet
   {
     fill(#F5FA00);
     ellipse(x, y, size/2, size/2);
-    // rect(x, y, size/5, size);
   }
 }
 
@@ -49,8 +48,8 @@ class Bullets
     if (System.currentTimeMillis() - lastShot > COOLDOWN)
     {
       lastShot = System.currentTimeMillis();
-      bulletsList.add(new Bullet(mouseX, mouseY, speed*2));
-      shootSFX.play();
+      bulletsList.add(new Bullet(mouseX, mouseY, speed*3));
+      if (soundEnabled) shootSFX.play();
     }
   }
 

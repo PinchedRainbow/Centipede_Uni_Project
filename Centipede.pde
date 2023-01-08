@@ -2,14 +2,20 @@ import processing.sound.*;
 import java.util.Scanner;
 
 Table highscoreTable;
+Table settings;
 
-gameStates currentState; 
+gameStates currentState;
 
-int speed = 10; 
+int speed = 10;
 int size = 20;
 int playerScore = 0;
 int COOLDOWN = 400;
 long lastShot = System.currentTimeMillis();
+
+boolean soundEnabled;
+boolean intro;
+boolean spiders;
+
 
 PImage city;
 PImage playerImg;
@@ -23,16 +29,29 @@ void setup()
 {
   size(800, 800);
   surface.setTitle("Centipede - Faheem Saleem");
+  lights();
   //gameState = SPLASH;
   Level.setLevel(1);
   Lives.setLives(3);
+  getSettings();
   loadAssets();
   createHighscore();
-  currentState = gameStates.SPLASH;
+  setUI();
+
+  if (intro) currentState = gameStates.SPLASH;
+  else currentState = gameStates.ENTERNAME;
+}
+
+void setUI()
+{
+  soundsCheckMark = new CheckMark(400, 100, soundEnabled == true ? 1 : 0, "Sounds");
+  spidersEnable = new CheckMark(400, 200, spiders == true ? 1 : 0, "Spiders");
+  introScreen = new CheckMark(400, 400, intro == true ? 1:0, "Intro");
 }
 
 void loadAssets()
 {
+  
   shootSFX = new SoundFile(this, "sounds/shoot.mp3");
   splitSound = new SoundFile(this, "sounds/explode.mp3");
   hit = new SoundFile(this, "sounds/hit.mp3");
@@ -40,30 +59,57 @@ void loadAssets()
   splashSound = new SoundFile(this, "sounds/countDown.mp3");
   gameOver = new SoundFile(this, "sounds/gameOver.mp3");
   keySFX = new SoundFile(this, "sounds/key.mp3");
-
   for (int i = 0; i < centiBodies.length; i++)
   {
     centiBodies[i] = loadImage("images/body" + (i+1) + ".png");
     centiHeads[i] = loadImage("images/head" + (i+1) + ".png");
-    
+
     scorpions[i] = loadImage("images/s" + i + ".png");
 
     centiBodies[i].resize(size, size);
     centiHeads[i].resize(size, size);
-    
+
     scorpions[i].resize(size+int(size/2), 0);
   }
 
   city = loadImage("images/city.png");
+  city.resize(width, 0);
   
   for (int i = 0; i < 2; i++)
   {
     characters.add(loadImage("images/player" + i + ".png"));
   }
-  
-  playerImg =loadImage("images/player.png");
-  
+
+  playerImg =loadImage("images/player0.png");
 }
+
+void getSettings()
+{
+  settings = loadTable("data/config.csv", "header");
+  if (settings == null)
+  {
+    settings = new Table();
+    settings.addColumn("Sound");
+    settings.addColumn("Spiders");
+    settings.addColumn("Intro");
+
+    settings.setInt(0, "Sound", 1);
+    settings.setInt(0, "Spiders", 1);
+    settings.setInt(0, "Intro", 1);
+
+    saveTable(settings, "data/config.csv");
+  } else {
+    readSettings();
+  }
+}
+
+void readSettings()
+{
+  soundEnabled = settings.getInt(0, "Sound") == 1 ? true : false;
+  intro = settings.getInt(0, "Intro") == 1 ? true : false;
+  spiders = settings.getInt(0, "Spiders") == 1 ? true : false;
+}
+
 
 void createHighscore()
 {
@@ -129,6 +175,16 @@ void draw()
   //if (gameState == WIN) WIN();
   //if (gameState == HOWTOPLAY) HOWTOPLAY();
 }
+
+//void transition(gameStates oldMenu, gameStates newMenu)
+//{
+//  currentState = oldMenu;
+//  int alpha = 0;
+//  fill(0, alpha);
+//  rect(0, 0, width, height);
+//  alpha = smooth(alpha, 255, 0.1);
+  
+//}
 
 
 //void createHighScoreFile()
