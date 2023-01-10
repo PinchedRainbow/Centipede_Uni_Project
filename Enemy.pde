@@ -110,7 +110,7 @@ void generateEnemies()
     int direction;
     if (i%2==0) direction = 1;
     else direction = -1;
-    enemies.add(new Centipede(returningX(), 0, int(random(6, 2000)), direction));
+    enemies.add(new Centipede(returningX(), -size, int(random(6, 20)), direction));
     if (spiders) scorpies.add(new Scorpion(int(random(-200, width+200)), int(random(-3000, -25)))); scorpies.add(new Scorpion(int(random(-200, width+200)), int(random(-3000, -25))));
   }
 }

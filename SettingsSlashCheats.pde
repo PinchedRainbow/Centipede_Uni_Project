@@ -4,6 +4,7 @@ String inputLives, inputLevel;
 CheckMark soundsCheckMark;
 CheckMark spidersEnable;
 CheckMark introScreen;
+CheckMark mushroomsEnable;
 
 // -------- TO ADD ------------
 // Cheats
@@ -39,6 +40,7 @@ void SETTINGS()
   soundsCheckMark.update();
   spidersEnable.update();
   introScreen.update();
+  mushroomsEnable.update();
 
 
   if (soundsCheckMark.stateChanged())
@@ -60,6 +62,12 @@ void SETTINGS()
     settings.setInt(0, "Intro", introScreen.getState());
     //saveTable(settings, "data/config.csv");
     intro = soundsCheckMark.getState() == 1 ? true : false;
+  }
+  
+  if (mushroomsEnable.stateChanged())
+  {
+    settings.setInt(0, "Mushrooms", mushroomsEnable.getState());
+    mushrooms = mushroomsEnable.getState() == 1 ? true : false;
   }
 
   // input for

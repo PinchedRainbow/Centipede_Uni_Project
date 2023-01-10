@@ -275,13 +275,12 @@ void INGAME()
 {
   if (!SetLevel && Level.getLevel() == 1)
   {
-    mushList.clearMushrooms();
-    mushList.generateMushrooms();
+    if (mushrooms) mushList.clearMushrooms(); mushList.generateMushrooms();
     SetLevel = true;
   } else {
     for (Mushroom mushie : mushList.mushrooms)
     {
-      mushie.display();
+      if (mushrooms) mushie.display();
     }
   }
 

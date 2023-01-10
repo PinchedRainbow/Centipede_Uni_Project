@@ -15,6 +15,8 @@ long lastShot = System.currentTimeMillis();
 boolean soundEnabled;
 boolean intro;
 boolean spiders;
+boolean mushrooms;
+
 
 
 PImage city;
@@ -47,6 +49,7 @@ void setUI()
   soundsCheckMark = new CheckMark(400, 100, soundEnabled == true ? 1 : 0, "Sounds");
   spidersEnable = new CheckMark(400, 200, spiders == true ? 1 : 0, "Spiders");
   introScreen = new CheckMark(400, 400, intro == true ? 1:0, "Intro");
+  mushroomsEnable = new CheckMark(400, 300, mushrooms == true ? 1:0, "Mushrooms");
 }
 
 void loadAssets()
@@ -92,10 +95,12 @@ void getSettings()
     settings.addColumn("Sound");
     settings.addColumn("Spiders");
     settings.addColumn("Intro");
+    settings.addColumn("Mushrooms");
 
     settings.setInt(0, "Sound", 1);
     settings.setInt(0, "Spiders", 1);
     settings.setInt(0, "Intro", 1);
+    settings.setInt(0, "Mushrooms", 1);
 
     saveTable(settings, "data/config.csv");
   } else {
@@ -108,6 +113,7 @@ void readSettings()
   soundEnabled = settings.getInt(0, "Sound") == 1 ? true : false;
   intro = settings.getInt(0, "Intro") == 1 ? true : false;
   spiders = settings.getInt(0, "Spiders") == 1 ? true : false;
+  mushrooms = settings.getInt(0, "Mushrooms") == 1 ? true : false;
 }
 
 

@@ -111,7 +111,7 @@ class MushroomsList
 
   void spawnMushroom(int x, int y)
   {
-    mushrooms.add(new Mushroom(x, y));
+     mushrooms.add(new Mushroom(x, y));
   }
 
   void clearMushrooms()
