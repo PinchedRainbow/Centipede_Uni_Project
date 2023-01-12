@@ -31,7 +31,7 @@ void updateEnemies()
         // getting the x and y values of the snake body hit
         int bodyX = int(currentEnemy.bodyPos[resultOfBulletCollision].x);
         int bodyY = int(currentEnemy.bodyPos[resultOfBulletCollision].y);
-        
+
         spawnParticles(bodyX, bodyY);
 
         if (resultOfBulletCollision == 0) // head hit, kill off whole snake
@@ -109,11 +109,12 @@ void generateEnemies()
   scorpies.clear();
   for (int i = 0; i < Level.getLevel(); i++)
   {
-    int direction;
-    if (i%2==0) direction = 1;
-    else direction = -1;
+    int direction = i%2==0 ? 1 : -1;
+    //if (i%2==0) direction = 1;
+    //else direction = -1;
     enemies.add(new Centipede(returningX(), -size, int(random(6, 20)), direction));
-    if (spiders) scorpies.add(new Scorpion(int(random(-200, width+200)), int(random(-3000, -25)))); scorpies.add(new Scorpion(int(random(-200, width+200)), int(random(-3000, -25))));
+    if (spiders) scorpies.add(new Scorpion(int(random(-200, width+200)), int(random(-3000, -25))));
+    if (spiders) scorpies.add(new Scorpion(int(random(-200, width+200)), int(random(-3000, -25))));
   }
 }
 
@@ -183,6 +184,7 @@ void callGameOver()
 {
   if (soundEnabled) gameOver.play();
   Lives.setLives(Lives.getLives()-1);
+  delay(100);
   if (Lives.getLives() <= 0) currentState = gameStates.GAMEOVER;
   else currentState = gameStates.MENU;
 }
@@ -266,7 +268,7 @@ class Scorpion extends BaseEnemy
   {
     for (Bullet bully : bullets.bulletsList)
     {
-      if (bully.x >= x && bully.x <= x + size && bully.y >= y && bully.y <= y + size)
+      if (bully.x >= x && bully.x <= x + size + 10 && bully.y >= y && bully.y <= y + size + 10)
       {
         bulletToRemove = bully;
         return true;
@@ -341,6 +343,8 @@ class Centipede extends BaseEnemy
     //float mr = r/sizeOfBody;
     //float mg = g/sizeOfBody;
     //float mb = b/sizeOfBody;
+    int j = 0;
+    
     for (int i = bodyPos.length-1; i >= 0; i--)
     {
       //fill((i+1)*multiplier, colour, colour);
@@ -352,12 +356,17 @@ class Centipede extends BaseEnemy
       {
         image(centiHeads[jhead], bodyPos[i].x, bodyPos[i].y);
       } else {
+        
         if (i < centiBodies.length)
         {
           image(centiBodies[i], bodyPos[i].x, bodyPos[i].y);
         } else {
-          int random = int(random(0, centiBodies.length));
-          image(centiBodies[random], bodyPos[i].x, bodyPos[i].y);
+          //int random = int(random(0, centiBodies.length));
+          image(centiBodies[j], bodyPos[i].x, bodyPos[i].y);
+          j++;
+          if (j > centiBodies.length-1) j = 0;
+          
+          //j = j < centiBodies.length ? j++ : 0;
         }
       }
 
@@ -379,6 +388,15 @@ class Centipede extends BaseEnemy
     if (y >= height)
     {
       callGameOver();
+    }
+
+    for (int i = 0; i < centiBodies.length; i++)
+    {
+      if (abs(x-playerShip.x) < (centiBodies[i].width + playerShip.size)/2 && abs(y-playerShip.y) < (scorpions[i].height + playerShip.size) / 2)
+      {
+        callGameOver();
+        break;
+      }
     }
   }
 

@@ -43,7 +43,7 @@ class Mushroom
 
   boolean checkForDamage(Bullet bullet)
   {
-    if (bullet.x >= x && bullet.x <= x + size && bullet.y >= y && bullet.y <= y + size)
+    if (bullet.x >= x && bullet.x <= x + size + 10 && bullet.y >= y && bullet.y <= y + size + 10)
     {
       if (soundEnabled) hit.play();
       damageState++;

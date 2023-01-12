@@ -95,6 +95,7 @@ void getSettings()
   settings = loadTable("data/config.csv", "header");
   if (settings == null)
   {
+    println("Creating config file");
     settings = new Table();
     settings.addColumn("Sound");
     settings.addColumn("Spiders");
@@ -107,7 +108,10 @@ void getSettings()
     settings.setInt(0, "Mushrooms", 1);
 
     saveTable(settings, "data/config.csv");
+    
+    readSettings();
   } else {
+    println("Reading settings");
     readSettings();
   }
 }
