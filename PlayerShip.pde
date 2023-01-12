@@ -85,8 +85,10 @@ void keyPressed()
   if (playerShip == null) return;
   if (currentState != gameStates.INGAME) return;
 
-  //if (keyCode == LEFT && playerShip.getX() > 0 + playerShip.size/2) playerShip.setX(playerShip.x-=playerShip.speed);
-  //if (keyCode == RIGHT && playerShip.x < width - playerShip.size/2) playerShip.setX(playerShip.x+=playerShip.speed);
+  if (keyCode == LEFT && playerShip.getX() > 0 + playerShip.size/2) playerShip.setX(playerShip.x-=playerShip.speed);
+  if (keyCode == RIGHT && playerShip.x < width - playerShip.size/2) playerShip.setX(playerShip.x+=playerShip.speed);
+  if (keyCode == UP && playerShip.y > 0 - playerShip.size/2) playerShip.setY(playerShip.y-=playerShip.speed);
+  if (keyCode == DOWN && playerShip.y < height - 80 - playerShip.size/2) playerShip.setY(playerShip.y+=playerShip.speed);
 
   //if (key == CODED)
   //{

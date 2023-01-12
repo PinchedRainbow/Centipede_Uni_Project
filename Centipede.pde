@@ -17,10 +17,12 @@ boolean intro;
 boolean spiders;
 boolean mushrooms;
 
-
+boolean FirstLevel = true;
 
 PImage city;
 PImage playerImg;
+PImage background;
+
 ArrayList<PImage> characters = new ArrayList<>();
 
 String playerName = "";
@@ -40,6 +42,8 @@ void setup()
   createHighscore();
   setUI();
 
+  particles = new ArrayList<Particle>();
+
   if (intro) currentState = gameStates.SPLASH;
   else currentState = gameStates.ENTERNAME;
 }
@@ -54,7 +58,6 @@ void setUI()
 
 void loadAssets()
 {
-  
   shootSFX = new SoundFile(this, "sounds/shoot.mp3");
   splitSound = new SoundFile(this, "sounds/explode.mp3");
   hit = new SoundFile(this, "sounds/hit.mp3");
@@ -77,13 +80,14 @@ void loadAssets()
 
   city = loadImage("images/city.png");
   city.resize(width, 0);
-  
+
   for (int i = 0; i < 2; i++)
   {
     characters.add(loadImage("images/player" + i + ".png"));
   }
 
   playerImg =loadImage("images/player0.png");
+  
 }
 
 void getSettings()
@@ -189,7 +193,7 @@ void draw()
 //  fill(0, alpha);
 //  rect(0, 0, width, height);
 //  alpha = smooth(alpha, 255, 0.1);
-  
+
 //}
 
 

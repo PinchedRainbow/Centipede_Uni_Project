@@ -21,6 +21,11 @@ class CheckMark
     return state;
   }
   
+  void setState(int state)
+  {
+    this.state = state;
+  }
+  
   void update()
   {
     display();
@@ -43,7 +48,7 @@ class CheckMark
     }
 
     textSize(40);
-    text(text, x-90, y+37);
+    text(text, x-120, y+37);
 
     textSize(20);
 
@@ -62,12 +67,12 @@ class CheckMark
 
   void listenForChanges()
   {
-    if (!mousePressed) return;
-    if (mouseX >= x && mouseX <= x+size && mouseY>=y && mouseY <= y+size) {
+    //if (!mousePressed) return;
+    if (mouseX >= x && mouseX <= x+size && mouseY>=y && mouseY <= y+size && mousePressed) {
       state = 1;
       stateChanged();
     }
-    else if (mouseX >= x1 && mouseX <= x1+size && mouseY>=y && mouseY <= y+size) {
+    else if (mouseX >= x1 && mouseX <= x1+size && mouseY>=y && mouseY <= y+size && mousePressed) {
       state = 0;
       stateChanged();
     }

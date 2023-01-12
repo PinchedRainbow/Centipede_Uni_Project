@@ -23,7 +23,11 @@ void SETTINGS()
   drawPixelsBackground();
 
   Button menuButton = new Button(width/2-buttonWidth/2, (height/3)*2-(buttonHeight/2), "Menu");
+  Button resetSettings = new Button(width/2-buttonWidth/2, (height/6*5)-buttonHeight/2, "Reset");
+  
   menuButton.showButton();
+  resetSettings.showButton();
+  
   if (menuButton.isClicked())
   {
     long future = System.currentTimeMillis() + 100;
@@ -35,6 +39,25 @@ void SETTINGS()
     }
     currentState = gameStates.MENU;
     getSettings();
+  }
+  
+  if (resetSettings.isClicked())
+  {
+    settings.setInt(0, "Sound", 1);
+    settings.setInt(0, "Spiders", 1);
+    settings.setInt(0, "Intro", 1);
+    settings.setInt(0, "Mushrooms", 1);
+    
+    soundEnabled = true;
+    spiders = true;
+    intro = true;
+    mushrooms = true;
+    
+    soundsCheckMark.setState(1);
+    spidersEnable.setState(1);
+    introScreen.setState(1);
+    mushroomsEnable.setState(1);
+    
   }
 
   soundsCheckMark.update();
@@ -54,14 +77,14 @@ void SETTINGS()
   {
     settings.setInt(0, "Spiders", spidersEnable.getState());
     //saveTable(settings, "data/config.csv");
-    spiders = soundsCheckMark.getState() == 1 ? true : false;
+    spiders = spidersEnable.getState() == 1 ? true : false;
   }
 
   if (introScreen.stateChanged())
   {
     settings.setInt(0, "Intro", introScreen.getState());
     //saveTable(settings, "data/config.csv");
-    intro = soundsCheckMark.getState() == 1 ? true : false;
+    intro = introScreen.getState() == 1 ? true : false;
   }
   
   if (mushroomsEnable.stateChanged())

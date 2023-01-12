@@ -31,6 +31,8 @@ void updateEnemies()
         // getting the x and y values of the snake body hit
         int bodyX = int(currentEnemy.bodyPos[resultOfBulletCollision].x);
         int bodyY = int(currentEnemy.bodyPos[resultOfBulletCollision].y);
+        
+        spawnParticles(bodyX, bodyY);
 
         if (resultOfBulletCollision == 0) // head hit, kill off whole snake
         {
@@ -192,7 +194,7 @@ class Scorpion extends BaseEnemy
   float dx, dy;
   int imageIndex = 0;
   float speed;
-  float randomness = 0.6;
+  float randomness = 0.7;
 
   Scorpion(int x, int y)
   {

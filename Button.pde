@@ -31,7 +31,7 @@ class Button
   
   boolean isClicked()
   {
-    if (!mousePressed) return false;
-    return (mouseX >= x && mouseX <= x + buttonWidth && mouseY >= y && mouseY <= y + buttonHeight);
+    //if (!mousePressed) return false;
+    return (mouseX >= x && mouseX <= x + buttonWidth && mouseY >= y && mouseY <= y + buttonHeight && mousePressed);
   }
 }

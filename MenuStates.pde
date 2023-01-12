@@ -24,6 +24,8 @@ SoundFile splashSound;
 SoundFile gameOver;
 boolean played = false;
 
+long startTime;
+
 enum gameStates
 {
   MENU,
@@ -75,7 +77,7 @@ void HOWTOPLAY()
   fill(200);
   textSize(20);
   text("Welcome to Centipede!\nThe aim is to destory each enemy in the level and get the highest score possible!\n"+
-    "Press the mouse button or spacebar to shoot a bullet\nAim for the head of the centipede to destory in one go!\nOtherwise it gets into a bit of a mess D:\nYou may shoot the mushrooms to make an easier path" +
+    "Press the mouse button or spacebar to shoot a bullet\nArrow keys for movement :0\nAim for the head of the centipede to destory in one go!\nOtherwise it gets into a bit of a mess D:\nYou may shoot the mushrooms to make an easier path" +
     "\nDon't let anything get to the city or you.. otherwise.. life taken away :(" +
     "\nHere is how the score is awarded:\nCentipede head: 100\nCentipede body: 10\nMushroom: 4\nSpider: 300\nIf ever needed, you can pause by pressing P ;)", width/2, 140);
 
@@ -205,10 +207,12 @@ void MENU()
     currentState = gameStates.HOWTOPLAY;
   }
   if (highScoresButton.isClicked()) {
+    delay(100);
     currentState = gameStates.HIGHSCORES;
   }
   if (settingsButton.isClicked())
   {
+    delay(100);
     currentState = gameStates.SETTINGS;
   }
 
@@ -256,6 +260,15 @@ void MENU()
   //    //  StartGame(false);
   //  } else if (mouseX > width/2-buttonWidth/2 && mouseX < width/2 + buttonWidth/2 && mouseY > height-100 && mouseY < (height-100) + buttonHeight) currentState = gameStates.HOWTOPLAY;
   //}
+
+  //int eyeSize = 10;
+  //int range = 300;
+  //int offset = 50;
+  //strokeWeight(2);
+  //float mappedX = map(mouseX, 0, width, range, width - range);
+  //float mappedY = constrain(map(mouseY, 0, height, offset, offset + eyeSize), offset, offset + eyeSize);
+  //ellipse(mappedX, mappedY, eyeSize, eyeSize);
+  
 }
 
 void StartGame()
@@ -263,20 +276,36 @@ void StartGame()
   SetLevel = false;
   resetEnemies();
   generateEnemies();
-  playerShip = new Player(width/2, height-20, speed, size);
+  playerShip = new Player(width/2, height-80, size, size);
   //playerShip = new Player(width/2, height/2, speed, useMouse, size);
+  startTime = System.currentTimeMillis();
   currentState = gameStates.INGAME;
 }
 
 
 //Scorpion s = new Scorpion(50,400);
+float promptAlpha = 255;
+
+void showStartPrompt(long time)
+{
+  if (time + 5000 > System.currentTimeMillis())
+  {
+    fill(255, 0 ,0, promptAlpha);
+    textSize(30);
+    textAlign(CENTER);
+    text("Dont let the centipede destory the city\nDont let the spiders get to you", width/2, 100);
+    promptAlpha--;
+  }
+}
 
 void INGAME()
 {
-  if (!SetLevel && Level.getLevel() == 1)
+  if (!SetLevel && FirstLevel)
   {
-    if (mushrooms) mushList.clearMushrooms(); mushList.generateMushrooms();
+    if (mushrooms) mushList.clearMushrooms();
+    if (mushrooms) mushList.generateMushrooms();
     SetLevel = true;
+    //startTime = System.currentTimeMillis();
   } else {
     for (Mushroom mushie : mushList.mushrooms)
     {
@@ -291,6 +320,8 @@ void INGAME()
     playerShip.update();
     bullets.updateBullets();
     updateEnemies();
+    updateParticles();
+    showStartPrompt(startTime);
     //s.update();
   } else {
     fill(0, 255/2);
@@ -344,7 +375,7 @@ void WIN()
 {
   for (Mushroom mushie : mushList.mushrooms)
   {
-    mushie.display();
+    if (mushrooms) mushie.display();
   }
 
   fill(0, 255/2);
@@ -366,6 +397,7 @@ void WIN()
       Level.setLevel(Level.getLevel() + 1);
       resetEnemies();
       generateEnemies();
+      FirstLevel = false;
       currentState = gameStates.INGAME;
       //changeScore(1000);
     }
