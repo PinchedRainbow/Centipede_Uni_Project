@@ -24,6 +24,8 @@ class Button
     
     rect(x, y, buttonWidth, buttonHeight, buttonRadius);
     fill(255);
+    
+    // Centers the text to the middle of the button
     textAlign(CENTER);
     textSize(30);
     text(text, x+buttonWidth/2, y+buttonHeight/2);

@@ -11,6 +11,7 @@ int ENTERNAME = 8;
 boolean SetLevel = false;
 boolean paused = false;
 
+// For the intro animation...
 float alpha = 0;
 float alpha2 = 0;
 float alpha3 = 0;
@@ -26,6 +27,7 @@ boolean played = false;
 
 long startTime;
 
+// Enum vibess
 enum gameStates
 {
   MENU,
@@ -40,7 +42,7 @@ enum gameStates
     HIGHSCORES
 }
 
-
+// Enters player name :o
 void ENTERNAME()
 {
   background(#111822);
@@ -63,7 +65,6 @@ void ENTERNAME()
   //  else playerName+=key;
   //}
 }
-
 
 void HOWTOPLAY()
 {

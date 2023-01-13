@@ -17,6 +17,7 @@ class Player
 
     this.img = playerImg;
 
+    // ------------- Was going for a character select screen, gave up -------------
     //int d = int(random(1, 100));
     //if (d <= 50)
     //{
@@ -64,7 +65,7 @@ class Player
 
   void move()
   {
-    // OLD Method, doesnt follow davidddddddd as such
+    // OLD Method, doesnt follow david criteria as much as such
     //if (useMouseToMove) x = mouseX;
   }
 
@@ -81,10 +82,12 @@ class Player
 
 void keyPressed()
 {
+  // Guard clauses!!!!!!!!
   if (key != CODED) return;
   if (playerShip == null) return;
   if (currentState != gameStates.INGAME) return;
 
+  // Movement.
   if (keyCode == LEFT && playerShip.getX() > 0 + playerShip.size/2) playerShip.setX(playerShip.x-=playerShip.speed);
   if (keyCode == RIGHT && playerShip.x < width - playerShip.size/2) playerShip.setX(playerShip.x+=playerShip.speed);
   if (keyCode == UP && playerShip.y > 0 - playerShip.size/2) playerShip.setY(playerShip.y-=playerShip.speed);

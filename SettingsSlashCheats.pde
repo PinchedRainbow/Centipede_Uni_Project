@@ -92,8 +92,6 @@ void SETTINGS()
     settings.setInt(0, "Mushrooms", mushroomsEnable.getState());
     mushrooms = mushroomsEnable.getState() == 1 ? true : false;
   }
-
-  // input for
 }
 
 void saving()

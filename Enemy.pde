@@ -1,19 +1,22 @@
 import java.util.Iterator;
 
+// Array Listt SOOO much better, I believe it be dynamic list ?!
 ArrayList<Centipede> enemies = new ArrayList<>();
 ArrayList<Scorpion> scorpies = new ArrayList<>();
 ArrayList<Centipede> toAddEnemies = new ArrayList<>();
 
+// Arrays to hold the PImage
 PImage[] centiBodies = new PImage[8];
 PImage[] centiHeads = new PImage[8];
-
 PImage[] scorpions = new PImage[8];
 
+// A bullet variable that will hold any bullets that needs to be removed at a specific time, mostly for if the bullet hits an enemy or mushroom
 Bullet bulletToRemove = null;
 SoundFile splitSound;
 
 void updateEnemies()
 {
+  // Winss if no enemies present
   if (getNumberofEnemies() == 0)
   {
     currentState = gameStates.WIN;
@@ -23,8 +26,10 @@ void updateEnemies()
     while (enemyIter.hasNext())
     {
       Centipede currentEnemy = enemyIter.next();
+      // updates every enemy
       currentEnemy.update();
 
+      // a method tha will return -1 if a bullet has not collided with any of the centipedes
       int resultOfBulletCollision = currentEnemy.collisionWithBullet();
       if (resultOfBulletCollision != -1) // bullet hit snake
       {
@@ -32,6 +37,7 @@ void updateEnemies()
         int bodyX = int(currentEnemy.bodyPos[resultOfBulletCollision].x);
         int bodyY = int(currentEnemy.bodyPos[resultOfBulletCollision].y);
 
+        // spawn particles for an explosion effect
         spawnParticles(bodyX, bodyY);
 
         if (resultOfBulletCollision == 0) // head hit, kill off whole snake
@@ -42,20 +48,21 @@ void updateEnemies()
           // 100 points per snake head kill
           changeScore(100);
 
+          // Spawn mushroom at bullet impact
           mushList.spawnMushroom(bodyX, bodyY);
         } else {
+          // Calculates the new size of the two centipedes after they split
           int newSize = currentEnemy.sizeOfBody - resultOfBulletCollision;
           // println("Splitting snake with body parts: " + newSize + ", " + resultOfBulletCollision);
 
           mushList.spawnMushroom(bodyX, bodyY);
 
+          // Remove the current enemy that was hit and spawn two centipedes in its place travelling in opposite direction
           enemyIter.remove();
           toAddEnemies.add(new Centipede(bodyX, bodyY, newSize, -1));
           toAddEnemies.add(new Centipede(bodyX, bodyY, resultOfBulletCollision, +1));
 
           changeScore(10);
-
-
 
           //toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, newSize, 1));
           //toAddEnemies.add(new Enemy(currentEnemy.x, currentEnemy.y, resultOfBulletCollision, -1));
@@ -75,7 +82,7 @@ void updateEnemies()
     enemies.addAll(toAddEnemies);
     toAddEnemies.clear();
 
-
+    // Just updates spiders movement... idk why I called it scorpion
     Iterator<Scorpion> sIter = scorpies.iterator();
     while (sIter.hasNext())
     {
@@ -90,6 +97,7 @@ void updateEnemies()
   }
 }
 
+// When level ends
 void resetEnemies()
 {
   for (Centipede enemy : enemies)
@@ -103,6 +111,8 @@ void resetEnemies()
 }
 
 
+// For each level the number of enemies increases
+// Ie; Level 1: 1 centipede, 2 spiders
 void generateEnemies()
 {
   enemies.clear();
@@ -118,11 +128,14 @@ void generateEnemies()
   }
 }
 
+// Returns total enemies
 int getNumberofEnemies()
 {
   return enemies.size() + scorpies.size();
 }
 
+
+// Spawns them correctly so it appears in a gridlike fashion
 int returningX()
 {
   int number;
@@ -211,6 +224,7 @@ class Scorpion extends BaseEnemy
     move();
     display();
 
+    // Shows it as a walking animation :D
     if (x%size==0 || y%size==0)
     {
       if (imageIndex < scorpions.length-1)
@@ -243,6 +257,7 @@ class Scorpion extends BaseEnemy
     //}
   }
 
+  // Calculates angle based on mouse movement and player ship
   void move()
   {
     float angle = atan2(playerShip.y-y, playerShip.x-x) + random(-randomness, randomness);
@@ -344,7 +359,7 @@ class Centipede extends BaseEnemy
     //float mg = g/sizeOfBody;
     //float mb = b/sizeOfBody;
     int j = 0;
-    
+
     for (int i = bodyPos.length-1; i >= 0; i--)
     {
       //fill((i+1)*multiplier, colour, colour);
@@ -356,7 +371,7 @@ class Centipede extends BaseEnemy
       {
         image(centiHeads[jhead], bodyPos[i].x, bodyPos[i].y);
       } else {
-        
+
         if (i < centiBodies.length)
         {
           image(centiBodies[i], bodyPos[i].x, bodyPos[i].y);
@@ -365,7 +380,7 @@ class Centipede extends BaseEnemy
           image(centiBodies[j], bodyPos[i].x, bodyPos[i].y);
           j++;
           if (j > centiBodies.length-1) j = 0;
-          
+
           //j = j < centiBodies.length ? j++ : 0;
         }
       }
@@ -418,10 +433,14 @@ class Centipede extends BaseEnemy
   void move()
   {
     x+=dx;
-    if (x < 0 || x > width-size) {
-      dx*=-1;
-      y+=size;
-    }
+    // If hits wall move down
+    if (x < 0 || x > width-size) moveDown();
+  }
+
+  void moveDown()
+  {
+    dx*=-1;
+    y+=size;
   }
 
   int collisionWithBullet()

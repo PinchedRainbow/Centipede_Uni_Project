@@ -68,12 +68,13 @@ class CheckMark
 
   void listenForChanges()
   {
-    //if (!mousePressed) return;
-    if (mouseX >= x && mouseX <= x+size && mouseY>=y && mouseY <= y+size && mousePressed) {
+    // Guard clauses !?
+    if (!mousePressed) return;
+    if (mouseX >= x && mouseX <= x+size && mouseY>=y && mouseY <= y+size) {
       state = 1;
       stateChanged();
     }
-    else if (mouseX >= x1 && mouseX <= x1+size && mouseY>=y && mouseY <= y+size && mousePressed) {
+    else if (mouseX >= x1 && mouseX <= x1+size && mouseY>=y && mouseY <= y+size) {
       state = 0;
       stateChanged();
     }

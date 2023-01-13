@@ -1,5 +1,6 @@
 SoundFile levelUp;
 
+// Static so I dont need to make an object
 static class Level
 {
   static int currentLevel;

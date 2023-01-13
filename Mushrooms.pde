@@ -118,7 +118,8 @@ class MushroomsList
   {
     mushrooms.clear();
   }
-
+  
+  // For gridlike positioning
   boolean validatePos(int x, int y)
   {
     return x == 0 || x == width/size || y == 0 || y >= (width/size)-2;
