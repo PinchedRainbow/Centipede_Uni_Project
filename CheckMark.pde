@@ -34,6 +34,7 @@ class CheckMark
 
   void display()
   {
+    // For the mouse glow effect
     float distance = dist(mouseX, mouseY, x+buttonWidth/2, y+buttonHeight/2);
     stroke(255, distance, distance);
     //fill(#5F5B5B, 50+distance);
@@ -77,7 +78,8 @@ class CheckMark
       stateChanged();
     }
   }
-
+  
+  // I guess this is a listener ? 
   boolean stateChanged() {
     return true;
   }

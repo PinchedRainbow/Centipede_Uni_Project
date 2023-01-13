@@ -4,6 +4,7 @@ import java.util.Iterator;
 Bullets bullets = new Bullets();
 SoundFile shootSFX;
 
+// Class for a singular bullet, defines the angle based on mouse positon and player position
 class Bullet
 {
   float x, y, speed;
@@ -15,9 +16,9 @@ class Bullet
     this.x = playerShip.x;
     this.y = playerShip.y;
     this.speed = speed;
-    angle = atan2(playerShip.y-y, playerShip.x-x);
-    dx = cos(angle) * speed;
-    dy = sin(angle) * speed;
+    this.angle = atan2(playerShip.y-y, playerShip.x-x);
+    this.dx = cos(angle) * speed;
+    this.dy = sin(angle) * speed;
   }
 
   void update()
@@ -39,25 +40,28 @@ class Bullet
   }
 }
 
+// A class to hold the array of bullets
 class Bullets
 {
   ArrayList<Bullet> bulletsList = new ArrayList<>();
 
   void addBullet()
   {
-    if (System.currentTimeMillis() - lastShot > COOLDOWN)
+    if (System.currentTimeMillis() - lastShot > COOLDOWN) // Cooldown feature so players arent able to spam it
     {
       lastShot = System.currentTimeMillis();
       bulletsList.add(new Bullet(mouseX, mouseY, speed*3));
       if (soundEnabled) shootSFX.play();
     }
   }
-
+  
+  // For level ending
   void clearBullets()
   {
     bulletsList.clear();
   }
 
+  // Just making sure that bullets dont infinitely stay in the array and gets removed when out of sight
   void updateBullets()
   {
     if (bulletToRemove!=null)
@@ -67,7 +71,7 @@ class Bullets
     }
 
     try {
-      Iterator<Bullet> bullet = bulletsList.iterator();
+      Iterator<Bullet> bullet = bulletsList.iterator(); // Due to Concurrent exception
       while (bullet.hasNext())
       {
         Bullet currentBullet = bullet.next();

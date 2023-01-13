@@ -29,9 +29,11 @@ class Button
     text(text, x+buttonWidth/2, y+buttonHeight/2);
   }
   
+  // Method that gets called when mouse is pressed on the button
   boolean isClicked()
   {
-    //if (!mousePressed) return false;
-    return (mouseX >= x && mouseX <= x + buttonWidth && mouseY >= y && mouseY <= y + buttonHeight && mousePressed);
+    // Guard clause!! (kinda)
+    if (!mousePressed) return false;
+    return (mouseX >= x && mouseX <= x + buttonWidth && mouseY >= y && mouseY <= y + buttonHeight);
   }
 }

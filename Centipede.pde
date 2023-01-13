@@ -1,6 +1,7 @@
-import processing.sound.*;
-import java.util.Scanner;
+import processing.sound.*; // for sound... :0
+import java.util.Scanner; // To scan
 
+// -------------- Initalising all the game variables ---------
 Table highscoreTable;
 Table settings;
 
@@ -16,7 +17,6 @@ boolean soundEnabled;
 boolean intro;
 boolean spiders;
 boolean mushrooms;
-
 boolean FirstLevel = true;
 
 PImage city;
@@ -27,29 +27,38 @@ ArrayList<PImage> characters = new ArrayList<>();
 
 String playerName = "";
 SoundFile keySFX;
+// ----------- End of initalisation -------------------
 
 
 void setup()
 {
-  size(800, 800);
-  surface.setTitle("Centipede - Faheem Saleem");
-  lights();
-  //gameState = SPLASH;
-  Level.setLevel(1);
+  size(800, 800); // was the sweet spot of resolution
+  surface.setTitle("Centipede - Faheem Saleem 22459265"); // very nice
+  
+  //gameState = SPLASH; // <-- this was before using Enums to declare current game mode
+  
+  // Default player setup, was gonna add a way to input it from the settings but too much effort
+  Level.setLevel(1); 
   Lives.setLives(3);
-  getSettings();
-  loadAssets();
-  createHighscore();
-  setUI();
+  
+  getSettings(); // yes this has a config file
+  
+  loadAssets(); // alotta assets
+  
+  createHighscore(); // if highscore doesnt exist then make a file
+  
+  setUI(); // this is for the settings
 
-  particles = new ArrayList<Particle>();
+  particles = new ArrayList<Particle>(); // attempt at particle system... didnt go so well
 
+  // this determines which screen it should start on based on the settings
   if (intro) currentState = gameStates.SPLASH;
   else currentState = gameStates.ENTERNAME;
 }
 
 void setUI()
 {
+  // Sets the option accordingly
   soundsCheckMark = new CheckMark(400, 100, soundEnabled == true ? 1 : 0, "Sounds");
   spidersEnable = new CheckMark(400, 200, spiders == true ? 1 : 0, "Spiders");
   introScreen = new CheckMark(400, 400, intro == true ? 1:0, "Intro");
@@ -58,6 +67,7 @@ void setUI()
 
 void loadAssets()
 {
+  // Alot of sounds than i realised
   shootSFX = new SoundFile(this, "sounds/shoot.mp3");
   splitSound = new SoundFile(this, "sounds/explode.mp3");
   hit = new SoundFile(this, "sounds/hit.mp3");
@@ -65,6 +75,8 @@ void loadAssets()
   splashSound = new SoundFile(this, "sounds/countDown.mp3");
   gameOver = new SoundFile(this, "sounds/gameOver.mp3");
   keySFX = new SoundFile(this, "sounds/key.mp3");
+  
+  // This is loading each centipede and spider image and resizing them 
   for (int i = 0; i < centiBodies.length; i++)
   {
     centiBodies[i] = loadImage("images/body" + (i+1) + ".png");
@@ -80,7 +92,8 @@ void loadAssets()
 
   city = loadImage("images/city.png");
   city.resize(width, 0);
-
+  
+  // Initally I was gonna add a character select screen but gave up on it after
   for (int i = 0; i < 2; i++)
   {
     characters.add(loadImage("images/player" + i + ".png"));
@@ -92,6 +105,7 @@ void loadAssets()
 
 void getSettings()
 {
+  // Loads in the settings from the config if it exists
   settings = loadTable("data/config.csv", "header");
   if (settings == null)
   {
@@ -127,6 +141,7 @@ void readSettings()
 
 void createHighscore()
 {
+  // Loads the file into the highscoreTable if it exists.. else creates one
   highscoreTable = loadTable("data/scores.csv", "header");
   if (highscoreTable == null)
   {
@@ -143,8 +158,10 @@ void createHighscore()
 
 void draw()
 {
-  background(0);
+  // A nice background colour
+  background(#111822);
 
+  // The beautiful switch case
   switch(currentState)
   {
   case SPLASH:
@@ -178,7 +195,9 @@ void draw()
     HIGHSCORES();
     break;
   }
-
+  
+  
+  // --------- The old method  -------------
   //if (gameState == SPLASH) SPLASH();
   //if (gameState == ENTERNAME) ENTERNAME();
   //if (gameState == MENU) MENU();
@@ -190,6 +209,8 @@ void draw()
   //if (gameState == HOWTOPLAY) HOWTOPLAY();
 }
 
+
+//-------- A method to add transitions to each mode like fade in transitions, but wasnt entirely working ------------
 //void transition(gameStates oldMenu, gameStates newMenu)
 //{
 //  currentState = oldMenu;
@@ -200,7 +221,7 @@ void draw()
 
 //}
 
-
+// ------------ This was before using Table and trying with text file, found out Table was way better! -------------
 //void createHighScoreFile()
 //{
 //  try {
@@ -231,12 +252,16 @@ void changeScore(int score)
   playerScore+=score;
 }
 
+// Mostly used for resetting the score back to 0
 void setScore(int newScore) {
   playerScore = newScore;
 }
 
+
+// This gets called when the player loses all 3 lives
 void saveHighscore(String name, int score, int level)
 {
+  // Saves current name, score and level to the table 
   highscoreTable.addRow();
   //println(highscoreTable.getRowCount() + " total rows in table");
   highscoreTable.setString(highscoreTable.getRowCount() - 1, "Name", name);
